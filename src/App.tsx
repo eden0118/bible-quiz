@@ -196,7 +196,7 @@ export default function App() {
           </button>
           <button
             onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-neutral-200/20 dark:border-white/10 text-sm hover:bg-white/20 transition-all text-neutral-900 dark:text-white backdrop-blur-md"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-neutral-200/20 dark:border-white/10 text-sm hover:bg-white/20 transition-all text-neutral-900 dark:text-white backdrop-blur-md "
           >
             {themeMode === 'light' ? '🌙' : '☀️'}
           </button>

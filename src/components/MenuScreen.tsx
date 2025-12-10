@@ -55,13 +55,14 @@ export const MenuScreen = ({
             </div>
           </div>
 
-          <h1 className="text-6xl md:text-7xl font-black text-neutral-900 dark:text-white leading-[0.85] tracking-tighter mb-4">
-            BIBLE
+          <h1 className="text-6xl md:text-7xl font-black leading-[0.85] tracking-tighter mb-4">
+            <span className="text-neutral-950 dark:text-white">BIBLE</span>
             <br />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 to-red-600 dark:from-orange-400 dark:to-orange-600">
               WISDOM
             </span>
           </h1>
+
           <p className="text-neutral-500 dark:text-neutral-400 text-sm font-bold uppercase tracking-widest">
             {t.title.sub}
           </p>
