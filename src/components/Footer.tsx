@@ -1,4 +1,3 @@
-import React from 'react';
 import { FiGithub, FiGlobe } from 'react-icons/fi';
 
 interface FooterProps {

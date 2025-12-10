@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { bibleCards, translations, Language } from './database';
 import { Background, Footer } from './components';
 import { MenuScreen, GameScreen, FinishedScreen } from './screens';

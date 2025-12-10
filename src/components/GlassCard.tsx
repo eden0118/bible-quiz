@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/cn';
 
@@ -47,7 +47,7 @@ export interface GlassCardProps
  * 重構後的 GlassCard 元件
  * 提供統一的玻璃態樣式，支援多個變體組合
  */
-export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
+export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
   (
     { className, variant, padding, rounded, children, ...props },
     ref

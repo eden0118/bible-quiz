@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import { cn } from '../lib/cn';
 
 export interface BackgroundProps {
@@ -19,7 +19,7 @@ export interface BackgroundProps {
  *   <AppContent />
  * </Background>
  */
-export const Background = React.forwardRef<
+export const Background = forwardRef<
   HTMLDivElement,
   BackgroundProps
 >(({ children, className }, ref) => {
