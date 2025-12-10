@@ -1,7 +1,7 @@
 import React from 'react';
-import { GlassCard } from './GlassCard';
-import { Button } from './Button';
-import { BibleCard } from '../data';
+import { GlassCard } from '../components/GlassCard';
+import { Button } from '../components/Button';
+import { BibleCard } from '../database';
 
 interface GameScreenProps {
   currentCard: BibleCard;
@@ -79,7 +79,7 @@ export const GameScreen = ({
         <div className="h-1 rounded-full bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
 
         {/* Verse */}
-        <p className="border-l-4 border-orange-500 pl-3 text-xs leading-relaxed text-neutral-300 italic sm:pl-4 sm:text-sm lg:pl-6 lg:text-lg lg:leading-relaxed">
+        <p className="border-l-4 border-orange-500 pl-3 text-xs italic leading-relaxed text-neutral-300 sm:pl-4 sm:text-sm lg:pl-6 lg:text-lg lg:leading-relaxed">
           "{cardContent.verse}"
         </p>
 

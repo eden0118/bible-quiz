@@ -1,7 +1,8 @@
 import React from 'react';
-import { GlassCard } from './GlassCard';
+import { GlassCard } from '../components/GlassCard';
+import { Leaderboard } from '../components/Leaderboard';
 
-interface MenuProps {
+interface MenuScreenProps {
   playerName: string;
   gameMode: 'all' | 'old' | 'new';
   language: 'zh' | 'en';
@@ -23,20 +24,11 @@ export const MenuScreen = ({
   onGameModeChange,
   onStartGame,
   onToggleLanguage,
-}: MenuProps) => (
+}: MenuScreenProps) => (
   <>
-    {/* Settings Bar */}
-    <div className="absolute top-6 right-6 z-50 flex gap-3">
-      <button
-        onClick={onToggleLanguage}
-        className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-black tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white/20"
-      >
-        {language === 'zh' ? 'EN' : '中文'}
-      </button>
-    </div>
-
     <div className="flex flex-1 flex-col items-center justify-center p-6">
       <GlassCard className="relative z-10 w-full max-w-md border-white/10 p-10 md:p-16">
+        {/* Header */}
         <div className="mb-12 text-left">
           <div className="mb-4 flex items-center gap-2">
             <div className="h-1 w-8 rounded-full bg-orange-500"></div>
@@ -45,7 +37,7 @@ export const MenuScreen = ({
             </div>
           </div>
 
-          <h1 className="mb-4 text-6xl leading-[0.85] font-black tracking-tighter md:text-7xl">
+          <h1 className="mb-4 text-6xl font-black leading-[0.85] tracking-tighter md:text-7xl">
             <span className="text-white">BIBLE</span>
             <br />
             <span className="bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
@@ -58,6 +50,7 @@ export const MenuScreen = ({
           </p>
         </div>
 
+        {/* Form */}
         <div className="space-y-8">
           {/* Name Input */}
           <div className="group relative">
@@ -96,6 +89,7 @@ export const MenuScreen = ({
             </div>
           </div>
 
+          {/* Start Button */}
           <button
             disabled={!playerName.trim()}
             className={`flex w-full items-center justify-center gap-3 rounded-2xl py-5 text-lg font-black tracking-widest uppercase transition-all ${
@@ -110,62 +104,14 @@ export const MenuScreen = ({
         </div>
       </GlassCard>
 
-      <div className="mt-12 text-[10px] font-black tracking-[0.3em] text-neutral-600 uppercase opacity-50">
-        {t.title.resources}
-      </div>
-
-      {/* Leaderboard */}
+      {/* Leaderboard Section */}
       {leaderboard.length > 0 && (
         <div className="mt-8 w-full max-w-md">
           <div className="rounded-2xl border border-white/5 bg-black/20 p-6">
             <h3 className="mb-6 pl-2 text-left text-xs font-black tracking-widest text-neutral-400 uppercase">
               🏆 {language === 'zh' ? '排行榜' : 'Leaderboard'}
             </h3>
-            <div className="max-h-48 space-y-3 overflow-y-auto pr-2">
-              {leaderboard.length === 0 ? (
-                <p className="text-sm text-neutral-400 italic">
-                  {language === 'zh' ? '暫無排行' : 'No leaderboard'}
-                </p>
-              ) : (
-                leaderboard.slice(0, 5).map((entry, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-center justify-between rounded-xl p-3 transition-all ${
-                      entry.name === playerName
-                        ? 'border border-orange-500/30 bg-orange-500/10'
-                        : 'border border-transparent bg-white/5'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span
-                        className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black ${
-                          idx === 0
-                            ? 'bg-orange-400 text-black'
-                            : idx === 1
-                              ? 'bg-neutral-300 text-neutral-800'
-                              : idx === 2
-                                ? 'bg-orange-900 text-orange-200'
-                                : 'bg-neutral-800 text-neutral-500'
-                        }`}
-                      >
-                        {idx + 1}
-                      </span>
-                      <div className="text-left">
-                        <div className="text-sm leading-tight font-bold text-neutral-200">
-                          {entry.name}
-                        </div>
-                        <div className="text-[9px] font-black tracking-wider text-neutral-400 uppercase opacity-70">
-                          {entry.mode}
-                        </div>
-                      </div>
-                    </div>
-                    <span className="font-mono font-bold text-orange-400">
-                      {entry.score}
-                    </span>
-                  </div>
-                ))
-              )}
-            </div>
+            <Leaderboard leaderboard={leaderboard} playerName={playerName} language={language} />
           </div>
         </div>
       )}

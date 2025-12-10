@@ -1,6 +1,6 @@
 import React from 'react';
-import { GlassCard } from './GlassCard';
-import { Button } from './Button';
+import { GlassCard } from '../components/GlassCard';
+import { Button } from '../components/Button';
 
 interface FinishedScreenProps {
   score: number;
@@ -27,7 +27,7 @@ export const FinishedScreen = ({
     {/* Result Card */}
     <GlassCard className="relative mb-4 w-full max-w-full space-y-4 overflow-hidden p-4 text-center sm:mb-6 sm:max-w-2xl sm:space-y-6 sm:p-8 lg:mb-8 lg:space-y-8 lg:p-12">
       {/* Decorative gradient line */}
-      <div className="absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
+      <div className="absolute right-0 left-0 top-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
 
       <div className="pt-2 sm:pt-4">
         <h2 className="bg-linear-to-r from-orange-400 to-red-500 bg-clip-text text-2xl font-black text-transparent sm:text-3xl lg:text-5xl">
@@ -78,7 +78,7 @@ export const FinishedScreen = ({
     {leaderboard.length > 0 && (
       <div className="w-full max-w-full sm:max-w-2xl">
         <GlassCard className="relative overflow-hidden p-4 sm:p-6 lg:p-8">
-          <div className="absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
+          <div className="absolute right-0 left-0 top-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
 
           <div className="pt-4 sm:pt-6">
             <h3 className="mb-4 text-center text-xs font-black tracking-[0.2em] text-neutral-400 uppercase sm:mb-6 lg:mb-8">

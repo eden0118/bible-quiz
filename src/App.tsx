@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { bibleCards } from './data';
-import { translations, Language } from './i18n';
-import { Background, MenuScreen, GameScreen, FinishedScreen } from './components';
+import React, { useState, useEffect } from 'react';
+import { bibleCards, translations, Language } from './database';
+import { Background, Footer } from './components';
+import { MenuScreen, GameScreen, FinishedScreen } from './screens';
 
 // --- Types ---
 interface LeaderboardEntry {
@@ -108,6 +108,7 @@ export default function App() {
           onStartGame={startGame}
           onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
         />
+        <Footer language={language} onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')} />
       </Background>
     );
   }
@@ -118,14 +119,6 @@ export default function App() {
 
     return (
       <Background>
-        <div className="absolute top-6 right-6 z-50 flex gap-3">
-          <button
-            onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-            className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-black tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white/20"
-          >
-            {language === 'zh' ? 'EN' : '中文'}
-          </button>
-        </div>
         <GameScreen
           currentCard={currentCard}
           currentCardIndex={currentCardIndex}
@@ -139,6 +132,7 @@ export default function App() {
           onNextCard={nextCard}
           onBack={() => setGameState('menu')}
         />
+        <Footer language={language} onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')} />
       </Background>
     );
   }
@@ -152,14 +146,6 @@ export default function App() {
 
     return (
       <Background>
-        <div className="absolute top-6 right-6 z-50 flex gap-3">
-          <button
-            onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-            className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-black tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white/20"
-          >
-            {language === 'zh' ? 'EN' : '中文'}
-          </button>
-        </div>
         <FinishedScreen
           score={score}
           filteredCardsLength={filteredCards.length}
@@ -170,6 +156,7 @@ export default function App() {
           translations={t}
           onBackToMenu={resetGame}
         />
+        <Footer language={language} onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')} />
       </Background>
     );
   }
