@@ -1,53 +1,156 @@
-# Bible Wisdom Flashcards
+# Bible Wisdom Flashcards 聖經智慧卡片
 
-A modern, interactive flashcard game built with React, TypeScript, and styled with Tailwind CSS.
+一個現代化、互動式的聖經卡片遊戲，使用 React、TypeScript、Tailwind CSS v4 和 Vite 建立。
 
-## Project Structure
+## 📁 專案結構
 
-- `App.tsx`: Main application logic and layout.
-- `data.ts`: Contains the Bible card data separated from logic, with support for English and Chinese.
-- `theme.ts`: Manages theme configuration (colors) and the dark mode toggle logic.
-- `i18n.ts`: Contains translation dictionaries for UI elements.
-- `index.tsx`: Application entry point.
-- `index.html`: Main HTML file with Tailwind CDN configuration.
+```
+bible-quiz/
+├── src/
+│   ├── components/        # UI 元件 (可選)
+│   ├── hooks/             # 自訂 Hooks (可選)
+│   ├── utils/             # 工具函式 (可選)
+│   ├── config/            # 配置檔案 (可選)
+│   ├── styles/
+│   │   └── globals.css    # 全局樣式
+│   ├── App.tsx            # 主應用元件
+│   ├── index.tsx          # 應用入點
+│   ├── data.ts            # 聖經卡片資料
+│   ├── i18n.ts            # 多語言翻譯
+│   └── theme.ts           # 主題管理
+├── public/                # 靜態資源
+├── index.html             # HTML 入點
+├── vite.config.ts         # Vite 配置
+├── tailwind.config.js     # Tailwind CSS 配置
+├── tsconfig.json          # TypeScript 配置
+├── .prettierrc             # Prettier 配置
+├── .prettierignore         # Prettier 忽略規則
+├── package.json           # 專案依賴
+└── README.md              # 此檔案
+```
 
-## Features
+## ✨ 功能特性
 
-- **Bilingual Support**: Toggle between English and Chinese (Traditional).
-- **Dark Mode**: Fully supported dark theme with adapted glassmorphism effects.
-- **Interactive UI**: Animated backgrounds, glass-effect cards, and smooth transitions.
-- **Gamification**: Time-based scoring, streaks, and local leaderboard.
+- **雙語支援**: 繁體中文 (zh) 和英文 (en)
+- **深色模式**: 完全支援亮色/深色主題
+- **互動式 UI**: 動畫背景、玻璃效果設計、平滑過渡
+- **遊戲化機制**: 時間限制計分、本地排行榜、localStorage 儲存
+- **響應式設計**: 行動優先的 Tailwind CSS 實現
+- **代碼格式化**: Prettier + Tailwind CSS 外掛
 
-## Development with Vite + Tailwind CSS v4
+## 🛠️ 技術棧
 
-To migrate this to a local production environment:
+| 工具 | 版本 | 用途 |
+|------|------|------|
+| **React** | ^19.2.1 | UI 框架 |
+| **TypeScript** | ~5.8.2 | 類型安全 |
+| **Tailwind CSS** | ^4.1.1 | 樣式框架 (v4 本地化) |
+| **Vite** | ^6.2.0 | 建置工具 |
+| **Prettier** | ^3.7.4 | 代碼格式化 |
 
-1.  Initialize a new Vite project:
-    ```bash
-    npm create vite@latest bible-flashcards -- --template react-ts
-    cd bible-flashcards
-    npm install
-    ```
+## 📦 安裝與開發
 
-2.  Install Tailwind CSS v4:
-    ```bash
-    npm install tailwindcss @tailwindcss/vite
-    ```
+### 安裝依賴
+```bash
+npm install
+```
 
-3.  Configure Vite (`vite.config.ts`):
-    ```ts
-    import { defineConfig } from 'vite'
-    import react from '@vitejs/plugin-react'
-    import tailwindcss from '@tailwindcss/vite'
+### 開發模式
+```bash
+npm run dev
+# 訪問 http://localhost:3000
+```
 
-    export default defineConfig({
-      plugins: [react(), tailwindcss()],
-    })
-    ```
+### 代碼格式化
+```bash
+npm run format              # 格式化全部文件
+npm run format:check        # 檢查格式
+```
 
-4.  Add CSS import in `src/index.css`:
-    ```css
-    @import "tailwindcss";
+### 構建生產版本
+```bash
+npm run build   # 編譯 TypeScript + Vite 構建
+npm run preview # 預覽生產構建
+```
+
+### 類型檢查
+```bash
+npm run type-check  # 檢查 TypeScript 錯誤
+```
+
+## 🎨 設計系統
+
+### 顏色方案
+- **主色**: Orange/Red (#FF6B35 → #DC2F1A)
+- **深色背景**: #050505
+- **淺色背景**: #F2F2F2
+
+### 動畫
+- `blob`: 7 秒無限迴圈動畫 (背景形狀)
+- `fade-in`: 0.5 秒淡入效果
+
+### 字體
+- **中文**: Noto Sans TC / Noto Serif TC
+- **回退**: 系統字體棧
+
+## 🔧 配置說明
+
+### Tailwind CSS v4
+使用新的 `@tailwindcss/vite` 外掛實現更快的構建和開發。配置在 `tailwind.config.js`。
+
+### Prettier 配置
+- 列寬: 100 字符
+- 單引號: 開啟
+- 尾隨逗號: ES5
+- Tailwind CSS 類別自動排序
+
+### TypeScript
+- 目標: ES2022
+- 嚴格模式: 啟用
+- JSX: react-jsx
+- 路徑別名: `@` → `src/`
+
+## 📝 程式碼規範
+
+- **格式化**: 執行 `npm run format` 自動格式化
+- **命名**:
+  - 組件: PascalCase
+  - 函式/變數: camelCase
+  - 常數: UPPER_SNAKE_CASE
+- **類型**: 盡量使用 TypeScript 類型註釋
+- **本地化**: 所有 UI 文本在 `src/i18n.ts` 中
+
+## 🎮 遊戲機制
+
+### 計分系統
+- **基礎分**: 10 分 (每題)
+- **時間扣分**: 每秒扣 0.5 分 (最低 1 分)
+- **範圍選擇**: 全部/舊約/新約
+- **排行榜**: 本地儲存前 10 名成績
+
+### 遊戲狀態
+1. **Menu**: 玩家設定 (姓名、難度、語言)
+2. **Playing**: 答題進行中 (15 秒倒數)
+3. **Finished**: 結果統計 (正確率、排行)
+
+## 🚀 未來計劃
+
+- [ ] 更多聖經卡片內容
+- [ ] 成就系統
+- [ ] 分享成績功能
+- [ ] 離線支援
+- [ ] PWA 應用化
+
+## 📄 授權
+
+MIT License - 自由使用和修改
+
+---
+
+**最後更新**: 2025 年 12 月 10 日
+**開發者**: Eden
+
+
     ```
 
 5.  Copy the source files (`App.tsx`, `data.ts`, `theme.ts`, `i18n.ts`) into the `src/` folder and update `main.tsx` (or `index.tsx`) to match.

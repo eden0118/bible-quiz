@@ -16,7 +16,7 @@ export const themeColors = {
     textSecondary: 'text-neutral-400',
     cardBg: 'bg-neutral-900/60',
     cardBorder: 'border-white/10',
-  }
+  },
 };
 
 export type ThemeMode = 'light' | 'dark';
@@ -28,4 +28,8 @@ export const applyTheme = (mode: ThemeMode) => {
   } else {
     html.classList.remove('dark');
   }
+};
+
+export const getCurrentTheme = (): ThemeMode => {
+  return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 };
