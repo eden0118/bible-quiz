@@ -1,20 +1,54 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Bible Wisdom Flashcards
 
-# Run and deploy your AI Studio app
+A modern, interactive flashcard game built with React, TypeScript, and styled with Tailwind CSS.
 
-This contains everything you need to run your app locally.
+## Project Structure
 
-View your app in AI Studio: https://ai.studio/apps/drive/1TIELMt_zAabsfFfMjFX4Ofpvo9ZC26Ih
+- `App.tsx`: Main application logic and layout.
+- `data.ts`: Contains the Bible card data separated from logic, with support for English and Chinese.
+- `theme.ts`: Manages theme configuration (colors) and the dark mode toggle logic.
+- `i18n.ts`: Contains translation dictionaries for UI elements.
+- `index.tsx`: Application entry point.
+- `index.html`: Main HTML file with Tailwind CDN configuration.
 
-## Run Locally
+## Features
 
-**Prerequisites:**  Node.js
+- **Bilingual Support**: Toggle between English and Chinese (Traditional).
+- **Dark Mode**: Fully supported dark theme with adapted glassmorphism effects.
+- **Interactive UI**: Animated backgrounds, glass-effect cards, and smooth transitions.
+- **Gamification**: Time-based scoring, streaks, and local leaderboard.
 
+## Development with Vite + Tailwind CSS v4
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+To migrate this to a local production environment:
+
+1.  Initialize a new Vite project:
+    ```bash
+    npm create vite@latest bible-flashcards -- --template react-ts
+    cd bible-flashcards
+    npm install
+    ```
+
+2.  Install Tailwind CSS v4:
+    ```bash
+    npm install tailwindcss @tailwindcss/vite
+    ```
+
+3.  Configure Vite (`vite.config.ts`):
+    ```ts
+    import { defineConfig } from 'vite'
+    import react from '@vitejs/plugin-react'
+    import tailwindcss from '@tailwindcss/vite'
+
+    export default defineConfig({
+      plugins: [react(), tailwindcss()],
+    })
+    ```
+
+4.  Add CSS import in `src/index.css`:
+    ```css
+    @import "tailwindcss";
+    ```
+
+5.  Copy the source files (`App.tsx`, `data.ts`, `theme.ts`, `i18n.ts`) into the `src/` folder and update `main.tsx` (or `index.tsx`) to match.
+
