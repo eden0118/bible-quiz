@@ -1,33 +1,88 @@
 import React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../lib/cn';
 
-export const Button = ({
-  onClick,
-  className = '',
-  disabled = false,
-  variant = 'primary',
-  children,
-}: {
-  onClick?: () => void;
-  className?: string;
-  disabled?: boolean;
-  variant?: 'primary' | 'secondary';
-  children: React.ReactNode;
-}) => {
-  const baseStyle =
-    'px-8 py-3 font-bold rounded-full transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
+/**
+ * Button CVA 變體定義
+ * 使用 class-variance-authority 管理所有可能的樣式組合
+ */
+const buttonVariants = cva(
+  // 基礎樣式 (所有變體共用)
+  'inline-flex items-center justify-center font-medium transition-all duration-300 focus-ring disabled:opacity-50 disabled:cursor-not-allowed',
+  {
+    variants: {
+      variant: {
+        // 主要按鈕 - 漸層橙紅色，用於主要操作 (CTA)
+        primary:
+          'bg-gradient-to-r from-[hsl(var(--color-primary))] to-[hsl(var(--color-accent))] text-white hover:shadow-lg hover:shadow-primary/50 active:scale-95 dark:hover:shadow-primary/30',
 
-  const variantStyle =
-    variant === 'primary'
-      ? 'bg-linear-to-r from-orange-400 to-red-500 text-white hover:shadow-lg hover:shadow-orange-500/50 active:scale-95'
-      : 'bg-neutral-200/50 dark:bg-neutral-800/50 text-neutral-900 dark:text-white hover:bg-neutral-300/50 dark:hover:bg-neutral-700/50 active:scale-95';
+        // 次要按鈕 - 淺色背景，用於次要操作
+        secondary:
+          'bg-secondary text-foreground hover:bg-secondary/90 active:scale-95 dark:hover:bg-secondary/80',
 
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseStyle} ${variantStyle} ${className}`}
-    >
-      {children}
-    </button>
-  );
-};
+        // 幽靈按鈕 - 僅邊框，用於非破壞性操作
+        ghost:
+          'border border-border text-foreground hover:bg-muted/50 active:scale-95 dark:hover:bg-muted/30',
+
+        // 危險操作 - 紅色，用於刪除或其他危險操作
+        danger:
+          'bg-error text-white hover:shadow-lg hover:shadow-error/50 active:scale-95',
+      },
+
+      size: {
+        sm: 'h-8 px-3 text-sm rounded-md',
+        md: 'h-10 px-4 text-base rounded-lg',
+        lg: 'h-12 px-6 text-lg rounded-xl',
+        xl: 'h-14 px-8 text-lg rounded-full',
+      },
+
+      fullWidth: {
+        true: 'w-full',
+        false: 'w-auto',
+      },
+    },
+
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+      fullWidth: false,
+    },
+  }
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
+
+/**
+ * 重構後的 Button 元件
+ * 支援 variant、size、fullWidth 屬性，自動適應 Light/Dark mode
+ */
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant,
+      size,
+      fullWidth,
+      disabled,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <button
+        ref={ref}
+        disabled={disabled}
+        className={cn(buttonVariants({ variant, size, fullWidth }), className)}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+
+Button.displayName = 'Button';
+

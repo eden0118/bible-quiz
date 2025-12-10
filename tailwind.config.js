@@ -8,6 +8,22 @@ export default {
         sans: ['"Noto Sans TC"', 'sans-serif'],
         serif: ['"Noto Serif TC"', 'serif'],
       },
+      colors: {
+        // Semantic colors - defined via CSS variables in globals.css
+        primary: 'hsl(var(--color-primary) / <alpha-value>)',
+        secondary: 'hsl(var(--color-secondary) / <alpha-value>)',
+        accent: 'hsl(var(--color-accent) / <alpha-value>)',
+        success: 'hsl(var(--color-success) / <alpha-value>)',
+        warning: 'hsl(var(--color-warning) / <alpha-value>)',
+        error: 'hsl(var(--color-error) / <alpha-value>)',
+        muted: 'hsl(var(--color-muted) / <alpha-value>)',
+        'muted-foreground': 'hsl(var(--color-muted-foreground) / <alpha-value>)',
+        background: 'hsl(var(--color-background) / <alpha-value>)',
+        foreground: 'hsl(var(--color-foreground) / <alpha-value>)',
+        border: 'hsl(var(--color-border) / <alpha-value>)',
+        'card-bg': 'hsl(var(--color-card-bg) / <alpha-value>)',
+        'card-border': 'hsl(var(--color-card-border) / <alpha-value>)',
+      },
       animation: {
         blob: 'blob 7s infinite',
       },

@@ -6,7 +6,7 @@ export const translations = {
       line1: '聖經',
       line2: '智慧卡片',
       sub: '翻卡學習 • 趣味挑戰',
-      resources: '2025年 7月',
+      resources: '2025年 12月',
     },
     menu: {
       nameLabel: '玩家名字',
@@ -42,7 +42,7 @@ export const translations = {
       line1: 'Bible',
       line2: 'Wisdom Cards',
       sub: 'Learn with Flashcards • Fun Challenge',
-      resources: 'July 2025',
+      resources: 'December 2025',
     },
     menu: {
       nameLabel: 'Player Name',
