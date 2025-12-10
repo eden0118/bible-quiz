@@ -3,6 +3,8 @@ import { GlassCard } from './GlassCard';
 import { Button } from './Button';
 import { BibleCard } from '../data';
 
+const TIMER_SECONDS = 30;
+
 interface GameScreenProps {
   currentCard: BibleCard;
   currentCardIndex: number;
@@ -39,35 +41,71 @@ export const GameScreen = ({
     <div className="flex flex-1 flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-4 w-full max-w-full sm:mb-6 sm:max-w-2xl lg:mb-8">
-        <div className="mb-2 flex flex-col items-center justify-between gap-3 sm:mb-4 sm:flex-row lg:mb-4">
-          <div className="flex gap-3 sm:gap-4 lg:gap-8">
-            <div className="text-center">
-              <p className="mb-1 text-xs text-neutral-600 sm:text-sm dark:text-neutral-400">
-                {t.game.progress}
-              </p>
-              <p className="text-xl font-black text-orange-500 sm:text-2xl lg:text-3xl">
-                {currentCardIndex + 1}/{totalCards}
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="mb-1 text-xs text-neutral-600 sm:text-sm dark:text-neutral-400">
-                {t.game.score}
-              </p>
-              <p className="text-xl font-black text-orange-500 sm:text-2xl lg:text-3xl">{score}</p>
-            </div>
-            <div className="text-center">
-              <p className="mb-1 text-xs text-neutral-600 sm:text-sm dark:text-neutral-400">⏱️</p>
-              <p
-                className={`text-xl font-black sm:text-2xl lg:text-3xl ${
-                  timeLeft <= 5 ? 'animate-pulse text-red-500' : 'text-orange-500'
+        <div className="mb-4 flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-8 lg:mb-6">
+          <div className="flex flex-col gap-1">
+            <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">
+              {t.game.progress}
+            </p>
+            <p className="text-2xl font-black text-neutral-900 dark:text-white">
+              {currentCardIndex + 1}/{totalCards}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">
+              {t.game.score}
+            </p>
+            <p className="text-2xl font-black text-orange-500">
+              {score}
+            </p>
+          </div>
+
+          {/* Circular Timer SVG */}
+          <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+            <svg
+              className="absolute inset-0 transform -rotate-90"
+              viewBox="0 0 100 100"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Background circle */}
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="text-neutral-200 dark:text-neutral-700"
+              />
+              {/* Progress circle */}
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeDasharray={`${(timeLeft / TIMER_SECONDS) * 283} 283`}
+                className={`transition-all duration-300 ${
+                  timeLeft <= 5 ? 'text-red-500' : 'text-orange-500'
+                }`}
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className={`text-lg font-black ${
+                  timeLeft <= 5
+                    ? 'text-red-500 animate-pulse'
+                    : 'text-orange-500'
                 }`}
               >
-                {timeLeft}s
-              </p>
+                {timeLeft}
+              </span>
             </div>
           </div>
-          <div className="text-center sm:text-right">
-            <p className="mb-1 text-xs text-neutral-600 sm:mb-2 sm:text-sm dark:text-neutral-400">
+
+          <div className="flex flex-col gap-1">
+            <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">
               {t.game.testaments[currentCard.testament]}
             </p>
             <Button onClick={onBack} variant="secondary" className="text-xs sm:text-sm">
@@ -86,14 +124,17 @@ export const GameScreen = ({
       </div>
 
       {/* Card */}
-      <GlassCard className="mb-4 w-full max-w-full space-y-3 p-4 sm:mb-6 sm:max-w-2xl sm:space-y-4 sm:p-8 lg:mb-8 lg:space-y-6 lg:p-12">
+      <GlassCard className="mb-4 w-full max-w-full space-y-3 p-4 sm:mb-6 sm:max-w-2xl sm:space-y-4 sm:p-8 lg:mb-8 lg:space-y-6 lg:p-12 overflow-hidden">
+        {/* Decorative gradient line */}
+        <div className="h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600 rounded-full"></div>
+
         {/* Verse */}
         <p className="border-l-4 border-orange-500 pl-3 text-xs leading-relaxed text-neutral-700 italic sm:pl-4 sm:text-sm lg:pl-6 lg:text-lg lg:leading-relaxed dark:text-neutral-300">
           "{cardContent.verse}"
         </p>
 
         {/* Question */}
-        <h3 className="text-center text-lg font-bold sm:text-xl lg:text-3xl">
+        <h3 className="text-center text-lg font-bold sm:text-xl lg:text-3xl text-neutral-900 dark:text-white">
           {cardContent.question}
         </h3>
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { bibleCards } from './data';
 import { translations, Language } from './i18n';
-import { ThemeMode, applyTheme } from './theme';
+import { applyTheme, loadTheme, saveTheme } from './theme';
+import type { ThemeMode } from './theme';
 import { Background, MenuScreen, GameScreen, FinishedScreen } from './components';
 
 // --- Types ---
@@ -39,20 +40,17 @@ export default function App() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const gameStartedRef = useRef(false);
 
-  // Apply theme on mount and when themeMode changes
+  // Initialize theme on mount only
   useEffect(() => {
-    const savedTheme = localStorage.getItem('themeMode') as ThemeMode | null;
-    if (savedTheme) {
-      setThemeMode(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      applyTheme('dark');
-    }
+    const savedTheme = loadTheme();
+    applyTheme(savedTheme);
+    setThemeMode(savedTheme);
   }, []);
 
+  // Listen for theme changes and update DOM + localStorage
   useEffect(() => {
-    localStorage.setItem('themeMode', themeMode);
     applyTheme(themeMode);
+    saveTheme(themeMode);
   }, [themeMode]);
 
   // Get filtered cards based on game mode
