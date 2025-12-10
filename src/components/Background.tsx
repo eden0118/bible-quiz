@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Background = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative min-h-screen overflow-hidden bg-[#F2F2F2] font-sans text-neutral-900 transition-colors duration-500 selection:bg-orange-500 selection:text-white dark:bg-[#050505] dark:text-white">
+  <div className="relative min-h-screen overflow-hidden bg-[#F0F0F0] dark:bg-[#050505] font-sans text-neutral-900 dark:text-white transition-colors duration-500 selection:bg-orange-500 selection:text-white">
     {/* Cinematic Geometric Shapes */}
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       {/* Shape 1: The 'Sun' - Top Right */}
