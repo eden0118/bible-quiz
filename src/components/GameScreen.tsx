@@ -43,7 +43,7 @@ export const GameScreen = ({
       <div className="mb-4 w-full max-w-full sm:mb-6 sm:max-w-2xl lg:mb-8">
         <div className="mb-4 flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-8 lg:mb-6">
           <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">
+            <p className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
               {t.game.progress}
             </p>
             <p className="text-2xl font-black text-neutral-900 dark:text-white">
@@ -52,18 +52,16 @@ export const GameScreen = ({
           </div>
 
           <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">
+            <p className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
               {t.game.score}
             </p>
-            <p className="text-2xl font-black text-orange-500">
-              {score}
-            </p>
+            <p className="text-2xl font-black text-orange-500">{score}</p>
           </div>
 
           {/* Circular Timer SVG */}
-          <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+          <div className="relative h-20 w-20 sm:h-24 sm:w-24">
             <svg
-              className="absolute inset-0 transform -rotate-90"
+              className="absolute inset-0 -rotate-90 transform"
               viewBox="0 0 100 100"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -94,9 +92,7 @@ export const GameScreen = ({
             <div className="absolute inset-0 flex items-center justify-center">
               <span
                 className={`text-lg font-black ${
-                  timeLeft <= 5
-                    ? 'text-red-500 animate-pulse'
-                    : 'text-orange-500'
+                  timeLeft <= 5 ? 'animate-pulse text-red-500' : 'text-orange-500'
                 }`}
               >
                 {timeLeft}
@@ -105,7 +101,7 @@ export const GameScreen = ({
           </div>
 
           <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">
+            <p className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
               {t.game.testaments[currentCard.testament]}
             </p>
             <Button onClick={onBack} variant="secondary" className="text-xs sm:text-sm">
@@ -124,9 +120,9 @@ export const GameScreen = ({
       </div>
 
       {/* Card */}
-      <GlassCard className="mb-4 w-full max-w-full space-y-3 p-4 sm:mb-6 sm:max-w-2xl sm:space-y-4 sm:p-8 lg:mb-8 lg:space-y-6 lg:p-12 overflow-hidden">
+      <GlassCard className="mb-4 w-full max-w-full space-y-3 overflow-hidden p-4 sm:mb-6 sm:max-w-2xl sm:space-y-4 sm:p-8 lg:mb-8 lg:space-y-6 lg:p-12">
         {/* Decorative gradient line */}
-        <div className="h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600 rounded-full"></div>
+        <div className="h-1 rounded-full bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
 
         {/* Verse */}
         <p className="border-l-4 border-orange-500 pl-3 text-xs leading-relaxed text-neutral-700 italic sm:pl-4 sm:text-sm lg:pl-6 lg:text-lg lg:leading-relaxed dark:text-neutral-300">
@@ -134,7 +130,7 @@ export const GameScreen = ({
         </p>
 
         {/* Question */}
-        <h3 className="text-center text-lg font-bold sm:text-xl lg:text-3xl text-neutral-900 dark:text-white">
+        <h3 className="text-center text-lg font-bold text-neutral-900 sm:text-xl lg:text-3xl dark:text-white">
           {cardContent.question}
         </h3>
 

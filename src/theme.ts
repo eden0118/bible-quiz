@@ -3,8 +3,6 @@
  * 處理 Light/Dark 模式的切換
  */
 
-import type { lightTheme, darkTheme } from './config/colors';
-
 export type ThemeMode = 'light' | 'dark';
 
 /**

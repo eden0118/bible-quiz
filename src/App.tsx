@@ -190,13 +190,13 @@ export default function App() {
         <div className="absolute top-6 right-6 z-50 flex gap-3">
           <button
             onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-            className="px-4 py-2 rounded-full bg-white/10 border border-neutral-200/20 dark:border-white/10 text-xs font-black uppercase tracking-widest hover:bg-white/20 transition-all text-neutral-900 dark:text-white backdrop-blur-md"
+            className="rounded-full border border-neutral-200/20 bg-white/10 px-4 py-2 text-xs font-black tracking-widest text-neutral-900 uppercase backdrop-blur-md transition-all hover:bg-white/20 dark:border-white/10 dark:text-white"
           >
             {language === 'zh' ? 'EN' : '中文'}
           </button>
           <button
             onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-neutral-200/20 dark:border-white/10 text-sm hover:bg-white/20 transition-all text-neutral-900 dark:text-white backdrop-blur-md "
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200/20 bg-white/10 text-sm text-neutral-900 backdrop-blur-md transition-all hover:bg-white/20 dark:border-white/10 dark:text-white"
           >
             {themeMode === 'light' ? '🌙' : '☀️'}
           </button>
@@ -231,13 +231,13 @@ export default function App() {
         <div className="absolute top-6 right-6 z-50 flex gap-3">
           <button
             onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-            className="px-4 py-2 rounded-full bg-white/10 border border-neutral-200/20 dark:border-white/10 text-xs font-black uppercase tracking-widest hover:bg-white/20 transition-all text-neutral-900 dark:text-white backdrop-blur-md"
+            className="rounded-full border border-neutral-200/20 bg-white/10 px-4 py-2 text-xs font-black tracking-widest text-neutral-900 uppercase backdrop-blur-md transition-all hover:bg-white/20 dark:border-white/10 dark:text-white"
           >
             {language === 'zh' ? 'EN' : '中文'}
           </button>
           <button
             onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-neutral-200/20 dark:border-white/10 text-sm hover:bg-white/20 transition-all text-neutral-900 dark:text-white backdrop-blur-md"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200/20 bg-white/10 text-sm text-neutral-900 backdrop-blur-md transition-all hover:bg-white/20 dark:border-white/10 dark:text-white"
           >
             {themeMode === 'light' ? '🌙' : '☀️'}
           </button>

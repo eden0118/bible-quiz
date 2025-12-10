@@ -1,31 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 export const Background = ({ children }: { children: React.ReactNode }) => {
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    // 檢查 html 元素是否有 dark class
-    const checkDarkMode = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
-    };
-
-    // 初始檢查
-    checkDarkMode();
-
-    // 監聽 html class 的變化
-    const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      className="relative min-h-screen overflow-hidden font-sans text-neutral-900 transition-colors duration-500 selection:bg-orange-500 selection:text-white dark:text-white"
-      style={{
-        backgroundColor: isDark ? '#050505' : '#F0F0F0'
-      }}
-    >
+    <div className="text-text-primary bg-bg-primary relative min-h-screen overflow-hidden font-sans transition-colors duration-500 selection:bg-orange-500 selection:text-white">
       {/* Cinematic Geometric Shapes */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* Shape 1: The 'Sun' - Top Right */}

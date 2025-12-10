@@ -7,17 +7,14 @@
 ```
 bible-quiz/
 ├── src/
-│   ├── components/        # UI 元件 (可選)
-│   ├── hooks/             # 自訂 Hooks (可選)
-│   ├── utils/             # 工具函式 (可選)
-│   ├── config/            # 配置檔案 (可選)
+│   ├── components/        # UI 元件
 │   ├── styles/
-│   │   └── globals.css    # 全局樣式
+│   │   └── globals.css    # 全局樣式與主題定義
 │   ├── App.tsx            # 主應用元件
 │   ├── index.tsx          # 應用入點
 │   ├── data.ts            # 聖經卡片資料
 │   ├── i18n.ts            # 多語言翻譯
-│   └── theme.ts           # 主題管理
+│   └── theme.ts           # 主題切換邏輯
 ├── public/                # 靜態資源
 ├── index.html             # HTML 入點
 ├── vite.config.ts         # Vite 配置
@@ -32,7 +29,7 @@ bible-quiz/
 ## ✨ 功能特性
 
 - **雙語支援**: 繁體中文 (zh) 和英文 (en)
-- **深色模式**: 完全支援亮色/深色主題
+- **深色模式**: 完全支援亮色/深色主題，透過 CSS 變數管理
 - **互動式 UI**: 動畫背景、玻璃效果設計、平滑過渡
 - **遊戲化機制**: 時間限制計分、本地排行榜、localStorage 儲存
 - **響應式設計**: 行動優先的 Tailwind CSS 實現
@@ -78,37 +75,23 @@ npm run preview # 預覽生產構建
 npm run type-check  # 檢查 TypeScript 錯誤
 ```
 
-## 🎨 設計系統
+## 🎨 設計系統與主題管理
 
-### 顏色方案
-- **主色**: Orange/Red (#FF6B35 → #DC2F1A)
-- **深色背景**: #050505
-- **淺色背景**: #F2F2F2
+本專案使用 **Tailwind CSS v4** 的 CSS 優先配置來管理主題。
 
-### 動畫
-- `blob`: 7 秒無限迴圈動畫 (背景形狀)
-- `fade-in`: 0.5 秒淡入效果
+- **主題定義**: 所有主題顏色定義在 `src/styles/globals.css` 中的 CSS 變數（如 `--bg-primary`）。
+- **深色模式**: 透過 `.dark` 類別切換 CSS 變數的值，實現自動主題切換。
+- **Tailwind 整合**: 使用 `@theme` 區塊將 CSS 變數映射為 Tailwind 類別（如 `bg-bg-primary`）。
 
-### 字體
-- **中文**: Noto Sans TC / Noto Serif TC
-- **回退**: 系統字體棧
+### 主要顏色
+- **bg-primary**: 主背景色 (Light: #F2F2F2, Dark: #050505)
+- **card-bg**: 卡片背景 (玻璃態)
+- **text-primary**: 主要文字 (Light: #171717, Dark: #FFFFFF)
 
-## 🔧 配置說明
-
-### Tailwind CSS v4
-使用新的 `@tailwindcss/vite` 外掛實現更快的構建和開發。配置在 `tailwind.config.js`。
-
-### Prettier 配置
-- 列寬: 100 字符
-- 單引號: 開啟
-- 尾隨逗號: ES5
-- Tailwind CSS 類別自動排序
-
-### TypeScript
-- 目標: ES2022
-- 嚴格模式: 啟用
-- JSX: react-jsx
-- 路徑別名: `@` → `src/`
+### 主題切換邏輯
+`src/theme.ts` 負責處理：
+1. 讀取/儲存使用者偏好到 `localStorage`。
+2. 切換 HTML 標籤上的 `dark` 類別。
 
 ## 📝 程式碼規範
 
@@ -120,38 +103,6 @@ npm run type-check  # 檢查 TypeScript 錯誤
 - **類型**: 盡量使用 TypeScript 類型註釋
 - **本地化**: 所有 UI 文本在 `src/i18n.ts` 中
 
-## 🎮 遊戲機制
-
-### 計分系統
-- **基礎分**: 10 分 (每題)
-- **時間扣分**: 每秒扣 0.5 分 (最低 1 分)
-- **範圍選擇**: 全部/舊約/新約
-- **排行榜**: 本地儲存前 10 名成績
-
-### 遊戲狀態
-1. **Menu**: 玩家設定 (姓名、難度、語言)
-2. **Playing**: 答題進行中 (15 秒倒數)
-3. **Finished**: 結果統計 (正確率、排行)
-
-## 🚀 未來計劃
-
-- [ ] 更多聖經卡片內容
-- [ ] 成就系統
-- [ ] 分享成績功能
-- [ ] 離線支援
-- [ ] PWA 應用化
-
 ## 📄 授權
 
 MIT License - 自由使用和修改
-
----
-
-**最後更新**: 2025 年 12 月 10 日
-**開發者**: Eden
-
-
-    ```
-
-5.  Copy the source files (`App.tsx`, `data.ts`, `theme.ts`, `i18n.ts`) into the `src/` folder and update `main.tsx` (or `index.tsx`) to match.
-
