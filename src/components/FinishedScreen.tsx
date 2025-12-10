@@ -44,14 +44,14 @@ export const FinishedScreen = ({
           <p className="text-3xl font-black text-orange-500 sm:text-4xl lg:text-6xl">{score}</p>
         </div>
 
-        <div className="mx-auto h-1 w-12 bg-neutral-300 dark:bg-neutral-700"></div>
+        <div className="mx-auto h-1 w-12 bg-neutral-700"></div>
 
         <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           <div className="flex flex-col items-center">
             <p className="mb-2 text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
               {language === 'zh' ? '答題數' : 'Questions'}
             </p>
-            <p className="text-2xl font-black text-neutral-900 lg:text-4xl dark:text-white">
+            <p className="text-2xl font-black text-white lg:text-4xl">
               {filteredCardsLength}
             </p>
           </div>
@@ -112,10 +112,10 @@ export const FinishedScreen = ({
                     <div className="flex min-w-0 flex-1 items-center gap-3">
                       <span className="text-xl sm:text-2xl">{getMedalEmoji(idx)}</span>
                       <div className="min-w-0">
-                        <p className="truncate text-xs font-bold text-neutral-900 sm:text-sm lg:text-base dark:text-white">
+                        <p className="truncate text-xs font-bold text-white sm:text-sm lg:text-base">
                           {idx + 1}. {entry.name}
                         </p>
-                        <p className="text-[10px] font-black tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
+                        <p className="text-[10px] font-black tracking-wider text-neutral-400 uppercase">
                           {entry.mode}
                         </p>
                       </div>
@@ -124,7 +124,7 @@ export const FinishedScreen = ({
                       <p className="text-lg font-black text-orange-500 sm:text-xl lg:text-2xl">
                         {entry.score}
                       </p>
-                      <p className="text-[10px] text-neutral-600 dark:text-neutral-400">
+                      <p className="text-[10px] text-neutral-400">
                         {entry.date}
                       </p>
                     </div>

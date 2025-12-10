@@ -11,11 +11,7 @@ export type ThemeMode = 'light' | 'dark';
  */
 export const applyTheme = (mode: ThemeMode): void => {
   const html = document.documentElement;
-  if (mode === 'dark') {
-    html.classList.add('dark');
-  } else {
-    html.classList.remove('dark');
-  }
+  html.setAttribute('data-theme', mode);
 };
 
 /**
@@ -23,7 +19,8 @@ export const applyTheme = (mode: ThemeMode): void => {
  * @returns 當前主題模式
  */
 export const getCurrentTheme = (): ThemeMode => {
-  return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  const theme = document.documentElement.getAttribute('data-theme');
+  return (theme as ThemeMode) || 'dark';
 };
 
 /**

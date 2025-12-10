@@ -3,76 +3,20 @@
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
+  /* 單一深色主題 */
   :root {
-    /* 語意化顏色 Token - Light Mode */
-    /* Primary: 漸層橙紅色 (CTA 按鈕、重點元素) */
-    --color-primary: 33 81% 51%; /* hsl */
-    --color-primary-hover: 26 100% 55%;
-    --color-primary-active: 20 100% 50%;
-
-    /* Secondary: 中性灰色 (次要操作) */
-    --color-secondary: 0 0% 85%;
-    --color-secondary-hover: 0 0% 78%;
-    --color-secondary-active: 0 0% 70%;
-
-    /* Accent: 強調色 */
-    --color-accent: 39 100% 50%;
-
-    /* Semantic colors */
-    --color-success: 142 72% 29%;
-    --color-warning: 38 92% 50%;
-    --color-error: 0 84% 60%;
-
-    /* Background & Text */
-    --color-background: 0 0% 95%;
-    --color-foreground: 0 0% 9%;
-    --color-muted: 0 0% 85%;
-    --color-muted-foreground: 0 0% 32%;
-    --color-border: 0 0% 90%;
-
-    /* Card */
-    --color-card-bg: 255 255 255;
-    --color-card-border: 255 255 255;
-
-    /* Typography */
-    --font-sans: 'Noto Sans TC', sans-serif;
-    --font-serif: 'Noto Serif TC', serif;
-
-    /* Spacing */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 2.5rem;
-
-    /* Border Radius */
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.5rem;
-    --radius-full: 9999px;
-
-    /* Shadow */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  }
-
-  .dark {
-    /* 語意化顏色 Token - Dark Mode */
-    /* Primary: 保持漸層橙紅色 */
+    /* ========== 色彩 Token ========== */
+    /* Primary: 漸層橙紅色 */
     --color-primary: 33 81% 55%;
     --color-primary-hover: 33 81% 60%;
     --color-primary-active: 26 100% 50%;
 
-    /* Secondary: 深色中性灰 */
+    /* Secondary: 中性灰色 */
     --color-secondary: 0 0% 20%;
     --color-secondary-hover: 0 0% 28%;
     --color-secondary-active: 0 0% 35%;
 
-    /* Accent: 保持強調色 */
+    /* Accent */
     --color-accent: 39 100% 50%;
 
     /* Semantic colors */
@@ -91,7 +35,31 @@
     --color-card-bg: 33 33 33;
     --color-card-border: 255 255 255;
 
-    /* Shadow */
+    /* ========== Typography Token ========== */
+    --font-sans: 'Noto Sans TC', sans-serif;
+    --font-serif: 'Noto Serif TC', serif;
+
+    /* Line Heights */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+
+    /* ========== Spacing Token ========== */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 2.5rem;
+
+    /* ========== Radius Token ========== */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    --radius-full: 9999px;
+
+    /* ========== Shadow Token ========== */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
@@ -100,13 +68,196 @@
 
   html {
     @apply scroll-smooth;
+    background-color: hsl(var(--color-background));
+    color: hsl(var(--color-foreground));
   }
 
   body {
-    @apply min-h-screen transition-colors duration-300;
+    @apply min-h-screen;
     background-color: hsl(var(--color-background));
     color: hsl(var(--color-foreground));
     font-family: var(--font-sans);
+    line-height: var(--line-height-normal);
+  }
+}
+
+/* ========== TYPOGRAPHY SYSTEM ========== */
+@layer utilities {
+  /* Heading Styles - 標題體系 */
+  .text-h1 {
+    @apply text-3xl font-bold md:text-4xl;
+    line-height: var(--line-height-tight);
+    color: hsl(var(--color-foreground));
+  }
+
+  .text-h2 {
+    @apply text-2xl font-bold md:text-3xl;
+    line-height: var(--line-height-tight);
+    color: hsl(var(--color-foreground));
+  }
+
+  .text-h3 {
+    @apply text-xl font-bold md:text-2xl;
+    line-height: var(--line-height-tight);
+    color: hsl(var(--color-foreground));
+  }
+
+  .text-h4 {
+    @apply text-lg font-semibold md:text-xl;
+    line-height: var(--line-height-tight);
+    color: hsl(var(--color-foreground));
+  }
+
+  /* Body Styles - 正文體系 */
+  .text-body-lg {
+    @apply text-base font-normal;
+    line-height: var(--line-height-relaxed);
+    color: hsl(var(--color-foreground));
+  }
+
+  .text-body {
+    @apply text-sm font-normal md:text-base;
+    line-height: var(--line-height-normal);
+    color: hsl(var(--color-foreground));
+  }
+
+  .text-body-sm {
+    @apply text-xs font-normal md:text-sm;
+    line-height: var(--line-height-normal);
+    color: hsl(var(--color-foreground));
+  }
+
+  /* Subtle/Muted Styles - 次要文本 */
+  .text-muted {
+    @apply text-sm;
+    color: hsl(var(--color-muted-foreground));
+    line-height: var(--line-height-normal);
+  }
+
+  .text-muted-sm {
+    @apply text-xs;
+    color: hsl(var(--color-muted-foreground));
+    line-height: var(--line-height-normal);
+  }
+
+  /* Emphasis Styles - 強調文本 */
+  .text-emphasis {
+    @apply font-semibold;
+    color: hsl(var(--color-primary));
+  }
+
+  /* Caption/Label - 標籤/說明文本 */
+  .text-label {
+    @apply text-xs font-medium uppercase tracking-wider;
+    color: hsl(var(--color-muted-foreground));
+  }
+
+  /* Serif/Display - 特殊文本 */
+  .text-serif {
+    font-family: var(--font-serif);
+  }
+
+  .text-display {
+    @apply text-4xl font-bold md:text-5xl;
+    line-height: var(--line-height-tight);
+    font-family: var(--font-serif);
+    color: hsl(var(--color-foreground));
+  }
+}
+
+/* ========== LAYOUT & SPACING UTILITIES ========== */
+@layer utilities {
+  /* Container - 內容容器，自動邊距和最大寬度 */
+  .layout-container {
+    @apply mx-auto w-full max-w-6xl px-4 md:px-6;
+  }
+
+  .layout-container-sm {
+    @apply mx-auto w-full max-w-4xl px-4 md:px-6;
+  }
+
+  /* Section - 區塊級元素的垂直間距 */
+  .section-spacing {
+    @apply py-12 md:py-16;
+  }
+
+  .section-spacing-sm {
+    @apply py-6 md:py-8;
+  }
+
+  /* Stack - Flexbox 堆疊（用於快速佈局） */
+  .stack-vertical {
+    @apply flex flex-col gap-4;
+  }
+
+  .stack-vertical-tight {
+    @apply flex flex-col gap-2;
+  }
+
+  .stack-vertical-loose {
+    @apply flex flex-col gap-6 md:gap-8;
+  }
+
+  .stack-horizontal {
+    @apply flex flex-row items-center gap-4;
+  }
+
+  .stack-horizontal-sm {
+    @apply flex flex-row items-center gap-2;
+  }
+
+  /* Grid - 簡單的二列網格 */
+  .grid-2-cols {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6;
+  }
+
+  .grid-3-cols {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6;
+  }
+
+  /* Content Padding - 內容內部的邊距 */
+  .content-padding {
+    @apply p-6 md:p-8;
+  }
+
+  .content-padding-sm {
+    @apply p-4 md:p-6;
+  }
+
+  .content-padding-lg {
+    @apply p-8 md:p-12;
+  }
+}
+
+/* ========== COMPONENT UTILITIES ========== */
+@layer utilities {
+  /* 玻璃態效果 */
+  .glass {
+    @apply rounded-2xl border border-white/10 bg-neutral-900/60 backdrop-blur-2xl;
+  }
+
+  /* 色彩過渡 */
+  .transition-theme {
+    @apply transition-colors duration-300;
+  }
+
+  /* 無障礙焦點 */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  }
+
+  /* 禁用狀態 */
+  .disabled-state {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  /* 互動回饋 */
+  .interactive-scale {
+    @apply transition-transform duration-200 active:scale-95 hover:scale-105;
+  }
+
+  .no-zoom {
+    touch-action: pan-x pan-y;
   }
 }
 
@@ -143,27 +294,5 @@
     100% {
       transform: translate(0px, 0px) scale(1);
     }
-  }
-}
-
-/* Utilities */
-@layer utilities {
-  .no-zoom {
-    touch-action: pan-x pan-y;
-  }
-
-  /* 玻璃態效果 */
-  .glass {
-    @apply rounded-2xl border border-white/20 bg-white/70 backdrop-blur-2xl dark:border-white/10 dark:bg-neutral-900/60;
-  }
-
-  /* 色彩過渡 */
-  .transition-theme {
-    @apply transition-colors duration-300;
-  }
-
-  /* 無障礙焦點 */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background;
   }
 }

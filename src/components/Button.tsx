@@ -3,30 +3,44 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/cn';
 
 /**
- * Button CVA 變體定義
- * 使用 class-variance-authority 管理所有可能的樣式組合
+ * ========================================
+ * BUTTON: Pragmatic Component Pattern
+ * ========================================
+ *
+ * 簡單的按鈕元件，使用 CVA 管理變體。
+ * Dark Mode 通過 CSS Variables 自動切換，無需額外的 dark: modifier。
+ *
+ * 特色：
+ * - 極簡邏輯，專注於樣式變體
+ * - CVA 提供型別安全的變體組合
+ * - Dark Mode 自動適應（通過 CSS Variables）
  */
+
 const buttonVariants = cva(
-  // 基礎樣式 (所有變體共用)
-  'inline-flex items-center justify-center font-medium transition-all duration-300 focus-ring disabled:opacity-50 disabled:cursor-not-allowed',
+  // 基礎樣式
+  'inline-flex items-center justify-center font-medium transition-all duration-200 focus-ring disabled:disabled-state',
   {
     variants: {
       variant: {
-        // 主要按鈕 - 漸層橙紅色，用於主要操作 (CTA)
+        // Primary: 主要 CTA（漸層橙紅）
         primary:
-          'bg-gradient-to-r from-[hsl(var(--color-primary))] to-[hsl(var(--color-accent))] text-white hover:shadow-lg hover:shadow-primary/50 active:scale-95 dark:hover:shadow-primary/30',
+          'bg-gradient-to-r from-[hsl(var(--color-primary))] to-[hsl(var(--color-accent))] text-white hover:shadow-lg hover:shadow-primary/50 active:scale-95',
 
-        // 次要按鈕 - 淺色背景，用於次要操作
+        // Secondary: 次要操作（淺色背景）
         secondary:
-          'bg-secondary text-foreground hover:bg-secondary/90 active:scale-95 dark:hover:bg-secondary/80',
+          'bg-secondary text-foreground hover:bg-secondary/90 active:scale-95',
 
-        // 幽靈按鈕 - 僅邊框，用於非破壞性操作
+        // Ghost: 最小化樣式（僅邊框）
         ghost:
-          'border border-border text-foreground hover:bg-muted/50 active:scale-95 dark:hover:bg-muted/30',
+          'border border-border text-foreground hover:bg-muted/50 active:scale-95',
 
-        // 危險操作 - 紅色，用於刪除或其他危險操作
+        // Danger: 危險操作（紅色警告）
         danger:
           'bg-error text-white hover:shadow-lg hover:shadow-error/50 active:scale-95',
+
+        // Accent: 強調色
+        accent:
+          'bg-accent text-white hover:shadow-lg hover:shadow-accent/50 active:scale-95',
       },
 
       size: {
@@ -55,8 +69,16 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {}
 
 /**
- * 重構後的 Button 元件
- * 支援 variant、size、fullWidth 屬性，自動適應 Light/Dark mode
+ * Button 元件
+ *
+ * 用法:
+ * <Button variant="primary" size="lg" fullWidth>
+ *   主要按鈕
+ * </Button>
+ *
+ * <Button variant="ghost" size="sm">
+ *   次要操作
+ * </Button>
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
