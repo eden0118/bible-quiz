@@ -33,7 +33,7 @@ export const FinishedScreen = ({
   translations: t,
   onBackToMenu,
 }: FinishedScreenProps) => (
-  <div className="mx-auto flex max-w-xl min-w-sm flex-1 flex-col items-center justify-center space-y-5 p-6 sm:space-y-8 lg:p-8">
+  <div className="mx-auto flex w-full max-w-xl min-w-sm flex-1 flex-col items-center justify-center space-y-5 p-6 sm:space-y-8 lg:p-8">
     {/* Result Card */}
     <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 space-y-5 overflow-hidden px-6 py-8 sm:space-y-8 lg:max-w-lg">
       {/* Decorative gradient line */}
@@ -52,7 +52,7 @@ export const FinishedScreen = ({
           <span className="text-6xl font-black text-orange-500 lg:text-[8rem]">{score}</span>
         </div>
 
-        <div className="mx-auto h-1 w-12 bg-neutral-700"></div>
+        <div className="mx-auto h-1 w-16 rounded-full bg-neutral-700"></div>
 
         <div className="grid w-full grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           <div className="flex flex-col items-center">
@@ -86,7 +86,7 @@ export const FinishedScreen = ({
         <h3 className="mb-4 text-center text-xs font-black tracking-[0.2em] text-neutral-400 uppercase sm:mb-6 lg:mb-8">
           🏆 排行榜 TOP 5
         </h3>
-        <Leaderboard playerName={playerName} limit={5} />
+        <Leaderboard playerName={playerName} limit={5} refreshTrigger={Date.now()} />
       </div>
     </GlassCard>
   </div>

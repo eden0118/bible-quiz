@@ -4,19 +4,33 @@ import { getLeaderboard, GameRecord } from '../lib/supabase';
 interface LeaderboardProps {
   playerName?: string;
   limit?: number;
+  refreshTrigger?: number;
 }
 
 const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  return `${year}.${month}.${day} ${hours}:${minutes}`;
+  if (!dateString) return '無日期';
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '無日期';
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}.${month}.${day} ${hours}:${minutes}`;
+  } catch (error) {
+    console.error('日期格式化失敗:', dateString, error);
+    return '無日期';
+  }
 };
 
-export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) => {
+export const Leaderboard = ({
+  playerName = '',
+  limit = 5,
+  refreshTrigger = 0,
+}: LeaderboardProps) => {
   const [records, setRecords] = useState<GameRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +45,7 @@ export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) =>
     };
 
     fetchLeaderboard();
-  }, []);
+  }, [refreshTrigger]);
 
   if (loading) {
     return <p className="text-sm text-neutral-400 italic">加載中...</p>;
@@ -42,7 +56,7 @@ export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) =>
   }
 
   return (
-    <div className="max-h-60 space-y-3 pr-2">
+    <div className="max-h-120 space-y-3 overflow-y-auto">
       {records.slice(0, limit).map((entry, idx) => (
         <div
           key={entry.id || idx}
@@ -76,7 +90,7 @@ export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) =>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="font-mono font-bold text-orange-400">{entry.score}</span>
+            <span className="font-bold text-orange-400">{entry.score}</span>
             <span className="text-xs text-neutral-500"> {formatDate(entry.created_at)}</span>
           </div>
         </div>

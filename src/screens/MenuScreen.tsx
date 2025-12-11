@@ -112,7 +112,7 @@ export const MenuScreen = ({
       <h3 className="ml-1 text-left text-sm font-black tracking-widest text-neutral-400">
         🏆 排行榜
       </h3>
-      <Leaderboard playerName={playerName} limit={10} />
+      <Leaderboard playerName={playerName} limit={5} />
     </GlassCard>
   </div>
 );
