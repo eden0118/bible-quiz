@@ -20,7 +20,6 @@ import { FaHandPointLeft } from 'react-icons/fa';
 interface MenuScreenProps {
   playerName: string;
   gameMode: 'all' | 'old' | 'new';
-  leaderboard: Array<{ name: string; score: number; date: string; mode: string }>;
   translations: any;
   onPlayerNameChange: (name: string) => void;
   onGameModeChange: (mode: 'all' | 'old' | 'new') => void;
@@ -30,7 +29,6 @@ interface MenuScreenProps {
 export const MenuScreen = ({
   playerName,
   gameMode,
-  leaderboard,
   translations: t,
   onPlayerNameChange,
   onGameModeChange,
@@ -109,15 +107,13 @@ export const MenuScreen = ({
     </GlassCard>
 
     {/* Leaderboard Section */}
-    {leaderboard.length > 0 && (
-      <div className="mt-8 w-full max-w-md">
-        <div className="rounded-2xl border border-white/5 bg-black/20 p-6">
-          <h3 className="mb-6 pl-2 text-left text-xs font-black tracking-widest text-neutral-400 uppercase">
-            🏆 排行榜
-          </h3>
-          <Leaderboard leaderboard={leaderboard} playerName={playerName} />
-        </div>
+    <div className="mt-8 w-full max-w-md">
+      <div className="rounded-2xl border border-white/5 bg-black/20 p-6">
+        <h3 className="mb-6 pl-2 text-left text-xs font-black tracking-widest text-neutral-400 uppercase">
+          🏆 排行榜
+        </h3>
+        <Leaderboard playerName={playerName} limit={5} />
       </div>
-    )}
+    </div>
   </div>
 );

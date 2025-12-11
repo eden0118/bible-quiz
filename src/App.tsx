@@ -15,21 +15,35 @@ import { useState, useRef, useEffect } from 'react';
 import { bibleCards, translations, BibleCard } from './database';
 import { Background, Footer } from './components';
 import { MenuScreen, GameScreen, FinishedScreen } from './screens';
+import { saveGameRecord } from './lib/supabase';
 
 // --- Types ---
-interface LeaderboardEntry {
-  name: string;
-  score: number;
-  date: string;
-  mode: string;
-}
-
 type GameState = 'menu' | 'playing' | 'finished';
 type GameMode = 'all' | 'old' | 'new';
 
 // 🎯 開發階段調整點：修改此數值以改變每次遊戲的題數
 const CARDS_PER_GAME = 5;
-const BASE_SCORE = 10;
+
+// ⏱️ 計時計分規則
+// 3秒內 10分，5秒內 9分，10秒內8分，15秒內7分，20秒內6分，超過20秒 5分
+const SCORE_BY_TIME = [
+  { timeLimit: 3, score: 10 },
+  { timeLimit: 5, score: 9 },
+  { timeLimit: 10, score: 8 },
+  { timeLimit: 15, score: 7 },
+  { timeLimit: 20, score: 6 },
+];
+const BASE_SCORE = 5;
+
+// 根據答題時間計算分數
+const calculateScore = (timeInSeconds: number): number => {
+  for (const tier of SCORE_BY_TIME) {
+    if (timeInSeconds <= tier.timeLimit) {
+      return tier.score;
+    }
+  }
+  return BASE_SCORE;
+};
 
 // --- Main App Component ---
 export default function App() {
@@ -41,14 +55,16 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(() => {
-    const saved = localStorage.getItem('leaderboard');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [correctCount, setCorrectCount] = useState(0);
 
   // 🔒 使用 Ref 儲存遊戲卡片列表，確保遊戲中不會重新生成
   const gameCardsRef = useRef<BibleCard[]>([]);
   const [cardsReady, setCardsReady] = useState(false);
+
+  // ⏱️ 計時相關狀態
+  const [cardStartTime, setCardStartTime] = useState<number | null>(null);
+  const [gameStartTime, setGameStartTime] = useState<number | null>(null);
+  const cardTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // 初始化遊戲卡片（只在遊戲開始時執行一次）
   useEffect(() => {
@@ -70,8 +86,17 @@ export default function App() {
       // 步驟 3: 取前 CARDS_PER_GAME 題
       gameCardsRef.current = shuffled.slice(0, CARDS_PER_GAME);
       setCardsReady(true);
+      // 記錄第一題的開始時間
+      setCardStartTime(Date.now());
     }
   }, [gameState, gameMode]);
+
+  // 當卡片索引改變時，記錄新卡片的開始時間
+  useEffect(() => {
+    if (gameState === 'playing' && cardsReady && !answered) {
+      setCardStartTime(Date.now());
+    }
+  }, [currentCardIndex, gameState, cardsReady, answered]);
 
   // 獲取當前遊戲卡片列表
   const filteredCards = gameCardsRef.current;
@@ -79,9 +104,12 @@ export default function App() {
   const startGame = () => {
     // 重置所有遊戲狀態
     setScore(0);
+    setCorrectCount(0);
     setCurrentCardIndex(0);
     setAnswered(false);
     setSelectedAnswer(null);
+    setCardStartTime(null);
+    setGameStartTime(Date.now()); // 記錄遊戲開始時間
     // 清空 Ref，讓 useEffect 重新生成遊戲卡片
     gameCardsRef.current = [];
     setGameState('playing');
@@ -93,8 +121,14 @@ export default function App() {
     setSelectedAnswer(index);
     setAnswered(true);
 
+    // 計算答題時間（秒）
+    const timeElapsed = cardStartTime ? (Date.now() - cardStartTime) / 1000 : 0;
+
+    // 只有答對才計分，分數根據時間決定
     if (index === filteredCards[currentCardIndex].answer) {
-      setScore((prev) => prev + BASE_SCORE);
+      const points = calculateScore(timeElapsed);
+      setScore((prev) => prev + points);
+      setCorrectCount((prev) => prev + 1);
     }
   };
 
@@ -109,16 +143,27 @@ export default function App() {
   };
 
   const endGame = () => {
-    const newEntry: LeaderboardEntry = {
-      name: playerName,
-      score: score,
-      date: new Date().toLocaleDateString('zh-TW'),
-      mode: gameMode,
-    };
+    // 📤 保存遊戲記錄到 Supabase
+    const quizTimeInSeconds = gameStartTime ? Math.round((Date.now() - gameStartTime) / 1000) : 0;
+    const accuracy =
+      filteredCards.length > 0 ? Math.round((correctCount / filteredCards.length) * 100) : 0;
 
-    const updatedLeaderboard = [newEntry, ...leaderboard].slice(0, 10);
-    setLeaderboard(updatedLeaderboard);
-    localStorage.setItem('leaderboard', JSON.stringify(updatedLeaderboard));
+    saveGameRecord({
+      player_name: playerName,
+      score: score,
+      quiz_time: quizTimeInSeconds,
+      game_mode: gameMode,
+      correct_count: correctCount,
+      total_questions: filteredCards.length,
+      accuracy: accuracy,
+    }).then((success) => {
+      if (success) {
+        console.log('✅ 遊戲記錄已上傳到 Supabase');
+      } else {
+        console.log('⚠️ 遊戲記錄上傳失敗，已保存到本地');
+      }
+    });
+
     setCardsReady(false);
     setGameState('finished');
   };
@@ -126,10 +171,14 @@ export default function App() {
   const resetGame = () => {
     gameCardsRef.current = [];
     setCardsReady(false);
+    setCardStartTime(null);
+    setGameStartTime(null);
+    if (cardTimerRef.current) clearInterval(cardTimerRef.current);
     setPlayerName('');
     setGameState('menu');
     setGameMode('all');
     setScore(0);
+    setCorrectCount(0);
     setCurrentCardIndex(0);
     setSelectedAnswer(null);
     setAnswered(false);
@@ -144,7 +193,6 @@ export default function App() {
         <MenuScreen
           playerName={playerName}
           gameMode={gameMode}
-          leaderboard={leaderboard}
           translations={t}
           onPlayerNameChange={setPlayerName}
           onGameModeChange={setGameMode}
@@ -181,9 +229,7 @@ export default function App() {
   // Finished State
   if (gameState === 'finished') {
     const accuracy =
-      filteredCards.length > 0
-        ? Math.round((score / (filteredCards.length * BASE_SCORE)) * 100)
-        : 0;
+      filteredCards.length > 0 ? Math.round((correctCount / filteredCards.length) * 100) : 0;
 
     return (
       <Background>
@@ -192,7 +238,6 @@ export default function App() {
           filteredCardsLength={filteredCards.length}
           accuracy={accuracy}
           playerName={playerName}
-          leaderboard={leaderboard}
           translations={t}
           onBackToMenu={resetGame}
         />
