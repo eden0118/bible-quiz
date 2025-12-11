@@ -26,11 +26,15 @@
   }
 
   .small-btn {
-    @apply rounded-full border border-white/10 bg-white/5 p-2 text-neutral-400 transition-all hover:border-white/30 hover:bg-white/10 hover:text-white;
+    @apply inline-flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .small-circle-btn {
+    @apply hover:border-accent/30 hover:bg-accent/10 hover:text-accent rounded-full border border-white/10 bg-white/5 p-2 text-neutral-400 transition-all;
   }
 
   .primary-btn {
-    @apply from-primary to-accent hover:shadow-primary/10 text-foreground bg-gradient-to-r active:scale-95;
+    @apply from-primary to-accent hover:shadow-primary/10 text-foreground bg-linear-to-r active:scale-95;
   }
 
   .secondary-btn {
@@ -83,6 +87,7 @@
 
   /* animate */
   --animate-blob: blob 7s infinite;
+  --animate-finger-point: finger-point 1.5s ease-in-out 0.5s infinite;
 
   @keyframes blob {
     0% {
@@ -98,10 +103,24 @@
       transform: translate(0px, 0px) scale(1);
     }
   }
-}
 
-/*
-        secondary: 'bg-secondary text-foreground hover:bg-secondary/90 active:scale-95',
-        ghost: 'border border-border text-foreground hover:bg-muted/50 active:scale-95',
-        danger: 'bg-error text-white hover:shadow-lg hover:shadow-error/50 active:scale-95',
-        accent: 'bg-accent text-white hover:shadow-lg hover:shadow-accent/50 active:scale-95', */
+  /* 手指指向 input 輸入位置的動畫 */
+  @keyframes finger-point {
+    0%,
+    10% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.7;
+      filter: hue-rotate(0deg);
+    }
+    50% {
+      transform: translateY(5px) scale(1.15);
+      opacity: 0.9;
+      filter: hue-rotate(15deg);
+    }
+    100% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.7;
+      filter: hue-rotate(0deg);
+    }
+  }
+}

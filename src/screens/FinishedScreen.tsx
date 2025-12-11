@@ -1,5 +1,19 @@
+/**
+ * 遊戲結束畫面元件
+ *
+ * 功能：
+ * - 顯示最終成績（分數、正確率、答題數）
+ * - 根據準確度顯示表情獎牌
+ * - 展示前 5 名排行榜
+ * - 高亮顯示當前玩家成績
+ *
+ * 排行邏輯：
+ * - 自動排序：分數由高到低
+ * - 名次提示：金銀銅牌 (🥇🥈🥉)
+ * - 本地儲存：前 10 筆紀錄
+ */
+
 import { GlassCard } from '../components/GlassCard';
-import { FaRegThumbsUp, FaLightbulb } from 'react-icons/fa';
 
 interface FinishedScreenProps {
   score: number;
@@ -28,7 +42,7 @@ export const FinishedScreen = ({
 
       <div>
         <h2 className="from-primary to-error bg-linear-to-r bg-clip-text text-center text-3xl font-black text-transparent sm:text-4xl lg:text-5xl">
-          {accuracy >= 80 ? <FaLightbulb /> : accuracy >= 60 ? <FaRegThumbsUp /> : '💪 '}
+          {accuracy >= 80 ? '🎉 ' : accuracy >= 60 ? '👍 ' : '💪 '}
           挑戰完成
         </h2>
       </div>

@@ -37,51 +37,95 @@ bible-quiz/
 └── README.md                # 此檔案
 ```
 
-## ✨ 功能特性
+## 📋 題目選擇邏輯
 
-- **雙語支援**: 繁體中文 (zh) 和英文 (en)
-- **深色模式**: 完全支援亮色/深色主題，透過 CSS 變數自動切換
+遊戲採用多層篩選機制來決定每場遊戲的題目集合：
+
+### 篩選步驟
+
+1. **模式篩選**
+   - 全部 (all): 使用所有卡片
+   - 舊約 (old): 只選舊約相關卡片
+   - 新約 (new): 只選新約相關卡片
+
+2. **隨機打亂**
+   - 使用 Fisher-Yates 算法進行隨機排序
+   - 確保每次遊戲的題目順序不同
+
+3. **題數限制**
+   - 從打亂後的卡片中取前 N 題
+   - 開發階段配置：`CARDS_PER_GAME = 5` (在 `src/App.tsx` 中修改)
+
+### 範例
+
+假設有 10 張舊約卡片，玩家選擇「舊約」模式：
+
+- 步驟 1: 篩選出 10 張舊約卡片
+- 步驟 2: 隨機排列 (例如: 3, 7, 1, 9, 5, ...)
+- 步驟 3: 取前 5 張 → 卡片 3, 7, 1, 9, 5
+
+### 開發階段調整
+
+如需改變每次遊戲的題數：
+
+```tsx
+// src/App.tsx
+const CARDS_PER_GAME = 5; // 修改此數值
+```
+
+---
+
+## 🎮 遊戲特性
+
 - **互動式 UI**: 動畫背景、玻璃效果設計、流暢的使用者互動
 - **遊戲化機制**: 計分系統、本地排行榜 (localStorage)
+- **隨機題目**: Fisher-Yates 算法確保題目隨機且多樣
+- **三種模式**: 全部經文、舊約、新約
+- **進度追蹤**: 實時顯示進度條和答題統計
 - **響應式設計**: 行動優先的 Tailwind CSS v4 實現
 - **類型安全**: 全程 TypeScript 支援
 
 ## 🛠️ 技術棧
 
-| 工具 | 版本 | 用途 |
-|------|------|------|
-| **React** | ^19.2.1 | UI 框架 |
-| **TypeScript** | ~5.8.2 | 類型安全 |
+| 工具             | 版本    | 用途                |
+| ---------------- | ------- | ------------------- |
+| **React**        | ^19.2.1 | UI 框架             |
+| **TypeScript**   | ~5.8.2  | 類型安全            |
 | **Tailwind CSS** | ^4.1.17 | 樣式框架 (CSS 優先) |
-| **Vite** | ^6.2.0 | 建置工具 |
-| **Prettier** | ^3.7.4 | 代碼格式化 |
+| **Vite**         | ^6.2.0  | 建置工具            |
+| **Prettier**     | ^3.7.4  | 代碼格式化          |
 
 ## 📦 安裝與開發
 
 ### 安裝依賴
+
 ```bash
 npm install
 ```
 
 ### 開發模式
+
 ```bash
 npm run dev
 # 訪問 http://localhost:5173
 ```
 
 ### 代碼格式化
+
 ```bash
 npm run format              # 格式化全部文件
 npm run format:check        # 檢查格式
 ```
 
 ### 構建生產版本
+
 ```bash
 npm run build               # 編譯 TypeScript + Vite 構建
 npm run preview             # 預覽生產構建
 ```
 
 ### 類型檢查
+
 ```bash
 npm run type-check          # 檢查 TypeScript 錯誤
 ```
@@ -91,7 +135,9 @@ npm run type-check          # 檢查 TypeScript 錯誤
 本專案採用 **Tailwind CSS v4** 的 CSS 優先配置，透過 CSS 變數管理設計 Token。
 
 ### 色彩系統
+
 所有色彩定義在 `src/styles/globals.css` 中的 `:root` CSS 變數：
+
 - **主色**: `--color-primary` (橙紅)
 - **次色**: `--color-secondary` (中性灰)
 - **強調色**: `--color-accent` (黃色)
@@ -99,10 +145,12 @@ npm run type-check          # 檢查 TypeScript 錯誤
 - **背景**: `--color-background`, `--color-foreground`
 
 ### 字體與排版
+
 - **預設字體**: Noto Sans TC (繁體中文)
 - **特殊字體**: Noto Serif TC (標題用)
 
 ### CVA 變體系統
+
 Button 和 GlassCard 元件使用 **class-variance-authority** 提供類型安全的變體組合：
 
 ```tsx
@@ -118,7 +166,9 @@ Button 和 GlassCard 元件使用 **class-variance-authority** 提供類型安�
 ## 📝 程式碼特色
 
 ### 簡潔的狀態管理
+
 App 元件集中管理遊戲狀態，使用 React Hooks：
+
 ```tsx
 const [gameState, setGameState] = useState<GameState>('menu');
 const [score, setScore] = useState(0);
@@ -126,9 +176,11 @@ const [leaderboard, setLeaderboard] = useState([]);
 ```
 
 ### 條件式螢幕渲染
+
 根據 `gameState` 渲染不同螢幕，使用簡潔的 if 語句。
 
 ### localStorage 排行榜
+
 自動儲存玩家成績到本地，支援前 10 筆紀錄。
 
 ## 🚀 部署

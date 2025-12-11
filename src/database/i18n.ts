@@ -1,13 +1,21 @@
+/**
+ * 國際化翻譯物件
+ *
+ * 結構：
+ * - title: 應用標題和資源資訊
+ * - menu: 菜單畫面文字
+ * - game: 遊戲畫面文字
+ * - finished: 結束畫面文字
+ *
+ * 日後擴展多語言時，可複製此物件並翻譯相應文字
+ */
 export const translations = {
   title: {
-    line1: '聖經',
-    line2: '智慧卡片',
-    sub: '翻卡學習 • 趣味挑戰',
-    resources: '2025年 12月',
+    sub: '聖經還記得多少？等你來挑戰',
+    resources: 'December 2025',
   },
   menu: {
-    nameLabel: '玩家名字',
-    namePlaceholder: '請輸入名字...',
+    nameLabel: '挑戰者',
     modeLabel: '選擇範圍',
     modes: {
       old: '舊約',
@@ -15,7 +23,6 @@ export const translations = {
       all: '全部',
     },
     startBtn: '開始挑戰',
-    footer: '聖經資源 2025',
   },
   game: {
     progress: '進度',

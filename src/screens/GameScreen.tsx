@@ -1,3 +1,18 @@
+/**
+ * 遊戲畫面元件
+ *
+ * 功能：
+ * - 顯示當前卡片內容（經文、問題、選項）
+ * - 實現答題交互（選擇答案、禁用已回答卡片）
+ * - 顯示進度條和計分
+ * - 展示答案結果（正確/錯誤提示）
+ *
+ * 顯示邏輯：
+ * - 答題前：選項背景淺灰，可點擊
+ * - 答題後：正確答案綠色，錯誤答案紅色
+ * - 選項禁用，顯示下一題按鈕
+ */
+
 import { GlassCard } from '../components/GlassCard';
 import { BibleCard } from '../database';
 import { FaExternalLinkSquareAlt } from 'react-icons/fa';
@@ -31,9 +46,9 @@ export const GameScreen = ({
   const progressPercent = ((currentCardIndex + 1) / totalCards) * 100;
 
   return (
-    <div className="fle mx-auto max-w-6xl flex-1 flex-col items-center justify-center space-y-5 p-6 sm:space-y-8 lg:p-8">
+    <div className="mx-auto flex max-w-6xl flex-1 flex-col space-y-5 p-6 sm:space-y-8 lg:p-8">
       {/* Header */}
-      <div className="mb-4 w-full max-w-full p-2 sm:mb-6 sm:max-w-2xl lg:mb-8">
+      <div className="w-full max-w-full px-2 sm:max-w-2xl">
         <div className="flex items-center justify-between gap-4 pb-2 sm:flex-row sm:gap-8">
           {/* progress */}
           <div className="flex flex-col items-center justify-center gap-1">
@@ -54,11 +69,12 @@ export const GameScreen = ({
           </div>
 
           <div className="flex items-center gap-3">
-            <p className="text-xs font-black tracking-[0.2em] text-neutral-400 uppercase">
-              {t.game.testaments[currentCard.testament]}
-            </p>
-            <button onClick={onBack} className="small-btn">
-              <FaExternalLinkSquareAlt size={14} />
+            <button
+              onClick={onBack}
+              className="hover:text-error cursor-pointer text-neutral-400"
+              title="離開"
+            >
+              <FaExternalLinkSquareAlt size={20} />
             </button>
           </div>
         </div>
@@ -73,9 +89,9 @@ export const GameScreen = ({
       </div>
 
       {/* Card */}
-      <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 space-y-5 overflow-hidden px-6 py-8 sm:space-y-8 lg:max-w-lg">
+      <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 overflow-hidden px-6 py-8 sm:space-y-7 lg:max-w-lg">
         {/* Verse */}
-        <p className="text-accent border-accent border-l-4 pl-3 text-sm leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg lg:leading-relaxed">
+        <p className="text-accent border-accent border-l-4 pl-3 leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg lg:leading-relaxed">
           {cardContent.verse}
         </p>
 
@@ -124,12 +140,16 @@ export const GameScreen = ({
       </GlassCard>
 
       {/* Action Button */}
-      {answered && (
+      {answered ? (
         <div className="w-full px-1">
           <button onClick={onNextCard} className="button secondary-btn">
             {currentCardIndex < totalCards - 1 ? '下一題' : '完成'}
           </button>
         </div>
+      ) : (
+        <span className="w-full text-center text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
+          {t.game.testaments[currentCard.testament]}
+        </span>
       )}
     </div>
   );

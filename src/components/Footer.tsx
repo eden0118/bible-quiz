@@ -1,4 +1,4 @@
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub, FaCoffee } from 'react-icons/fa';
 
 interface FooterProps {}
 
@@ -9,7 +9,7 @@ export const Footer = ({}: FooterProps) => {
     <footer className="relative right-0 bottom-0 left-0 z-40 border-t border-white/5 bg-black/40 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         {/* Copyright */}
-        <div className="text-[9px] font-black tracking-[0.15em] text-neutral-500 uppercase sm:text-xs">
+        <div className="text-[8px] font-black tracking-[0.15em] text-neutral-500 uppercase sm:text-xs">
           © {currentYear} Eden Chang. All rights reserved.
         </div>
 
@@ -17,11 +17,21 @@ export const Footer = ({}: FooterProps) => {
         <div className="flex items-center gap-3 sm:gap-4">
           {/* GitHub Link */}
           <a
-            href="https://github.com/eden0118/bible-quiz"
+            href="https://buymeacoffee.com/eden0118"
             target="_blank"
             rel="noopener noreferrer"
             title="GitHub Repository"
-            className="small-btn"
+            className="small-circle-btn"
+          >
+            <FaCoffee size={12} />
+          </a>
+          {/* GitHub Link */}
+          <a
+            href="https://github.com/eden0118"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="GitHub Repository"
+            className="small-circle-btn"
           >
             <FaGithub size={12} />
           </a>
