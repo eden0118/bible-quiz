@@ -20,7 +20,7 @@ export const Footer = ({}: FooterProps) => {
             href="https://buymeacoffee.com/eden0118"
             target="_blank"
             rel="noopener noreferrer"
-            title="GitHub Repository"
+            title="Buy me a coffee"
             className="small-circle-btn"
           >
             <FaCoffee size={12} />
@@ -30,7 +30,7 @@ export const Footer = ({}: FooterProps) => {
             href="https://github.com/eden0118"
             target="_blank"
             rel="noopener noreferrer"
-            title="GitHub Repository"
+            title="GitHub"
             className="small-circle-btn"
           >
             <FaGithub size={12} />
