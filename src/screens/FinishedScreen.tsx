@@ -33,7 +33,7 @@ export const FinishedScreen = ({
   translations: t,
   onBackToMenu,
 }: FinishedScreenProps) => (
-  <div className="fle mx-auto w-full max-w-6xl flex-1 flex-col items-center justify-center space-y-5 p-6 sm:space-y-8 lg:p-8">
+  <div className="mx-auto flex max-w-xl min-w-sm flex-1 flex-col items-center justify-center space-y-5 p-6 sm:space-y-8 lg:p-8">
     {/* Result Card */}
     <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 space-y-5 overflow-hidden px-6 py-8 sm:space-y-8 lg:max-w-lg">
       {/* Decorative gradient line */}

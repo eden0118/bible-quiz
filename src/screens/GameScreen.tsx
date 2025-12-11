@@ -46,7 +46,7 @@ export const GameScreen = ({
   const progressPercent = ((currentCardIndex + 1) / totalCards) * 100;
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-1 flex-col space-y-5 p-6 sm:space-y-8 lg:p-8">
+    <div className="mx-auto flex max-w-xl min-w-sm flex-1 flex-col space-y-5 p-6 sm:space-y-8 lg:p-8">
       {/* Header */}
       <div className="w-full max-w-full px-2 sm:max-w-2xl">
         <div className="flex items-center justify-between gap-4 pb-2 sm:flex-row sm:gap-8">

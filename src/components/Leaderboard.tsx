@@ -42,7 +42,7 @@ export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) =>
   }
 
   return (
-    <div className="max-h-48 space-y-3 overflow-y-auto pr-2">
+    <div className="max-h-60 space-y-3 pr-2">
       {records.slice(0, limit).map((entry, idx) => (
         <div
           key={entry.id || idx}

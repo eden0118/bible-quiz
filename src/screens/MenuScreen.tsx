@@ -34,7 +34,7 @@ export const MenuScreen = ({
   onGameModeChange,
   onStartGame,
 }: MenuScreenProps) => (
-  <div className="mx-auto flex max-w-6xl flex-1 flex-col space-y-5 p-6 sm:space-y-8 lg:p-8">
+  <div className="mx-auto flex w-full max-w-xl min-w-sm flex-1 flex-col space-y-5 p-6 sm:space-y-8 lg:p-8">
     <GlassCard className="relative w-full border-white/10 p-10">
       {/* Header */}
       <div className="mb-12 text-left">
@@ -107,13 +107,12 @@ export const MenuScreen = ({
     </GlassCard>
 
     {/* Leaderboard Section */}
-    <div className="w-full max-w-md">
-      <div className="rounded-2xl border border-white/5 bg-black/20 p-6">
-        <h3 className="mb-6 pl-2 text-left text-xs font-black tracking-widest text-neutral-400 uppercase">
-          🏆 排行榜
-        </h3>
-        <Leaderboard playerName={playerName} limit={5} />
-      </div>
-    </div>
+
+    <GlassCard className="space-y-4 border-white/10 p-8">
+      <h3 className="ml-1 text-left text-sm font-black tracking-widest text-neutral-400">
+        🏆 排行榜
+      </h3>
+      <Leaderboard playerName={playerName} limit={10} />
+    </GlassCard>
   </div>
 );
