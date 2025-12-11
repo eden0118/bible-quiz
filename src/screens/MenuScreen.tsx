@@ -68,12 +68,12 @@ export const MenuScreen = ({
             onChange={(e) => onPlayerNameChange(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && onStartGame()}
             placeholder=" "
-            className="input"
+            className="input cursor-pointer"
           />
           <label className="input-label">{t.menu.nameLabel}</label>
           {/* 手指動畫提示 */}
           {!playerName && (
-            <div className="pointer-events-none absolute top-1 left-15 -rotate-45 select-none">
+            <div className="pointer-events-none absolute top-1 right-3 -rotate-45 select-none">
               <div className="animate-finger-point text-accent text-2xl">
                 <FaHandPointLeft />
               </div>
@@ -107,7 +107,7 @@ export const MenuScreen = ({
     </GlassCard>
 
     {/* Leaderboard Section */}
-    <div className="mt-8 w-full max-w-md">
+    <div className="w-full max-w-md">
       <div className="rounded-2xl border border-white/5 bg-black/20 p-6">
         <h3 className="mb-6 pl-2 text-left text-xs font-black tracking-widest text-neutral-400 uppercase">
           🏆 排行榜

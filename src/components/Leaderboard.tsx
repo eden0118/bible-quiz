@@ -6,6 +6,16 @@ interface LeaderboardProps {
   limit?: number;
 }
 
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}.${month}.${day} ${hours}:${minutes}`;
+};
+
 export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) => {
   const [records, setRecords] = useState<GameRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +26,8 @@ export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) =>
       const data = await getLeaderboard();
       setRecords(data);
       setLoading(false);
+
+      console.log('排行榜數據:', data);
     };
 
     fetchLeaderboard();
@@ -42,7 +54,7 @@ export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) =>
         >
           <div className="flex items-center gap-4">
             <span
-              className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black ${
+              className={`flex h-6 w-6 items-center justify-center rounded-full text-sm font-black ${
                 idx === 0
                   ? 'bg-orange-400 text-black'
                   : idx === 1
@@ -63,7 +75,10 @@ export const Leaderboard = ({ playerName = '', limit = 5 }: LeaderboardProps) =>
               </div>
             </div>
           </div>
-          <span className="font-mono font-bold text-orange-400">{entry.score}</span>
+          <div className="flex items-center gap-3">
+            <span className="font-mono font-bold text-orange-400">{entry.score}</span>
+            <span className="text-xs text-neutral-500"> {formatDate(entry.created_at)}</span>
+          </div>
         </div>
       ))}
     </div>

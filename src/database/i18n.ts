@@ -11,7 +11,7 @@
  */
 export const translations = {
   title: {
-    sub: '聖經還記得多少？等你來挑戰',
+    sub: '聖經內容還記得多少？快來挑戰吧！',
     resources: 'December 2025',
   },
   menu: {
