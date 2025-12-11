@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { bibleCards, translations, Language } from './database';
+import { bibleCards, translations } from './database';
 import { Background, Footer } from './components';
 import { MenuScreen, GameScreen, FinishedScreen } from './screens';
 
@@ -22,7 +22,6 @@ export default function App() {
   const [gameState, setGameState] = useState<GameState>('menu');
   const [playerName, setPlayerName] = useState('');
   const [gameMode, setGameMode] = useState<GameMode>('all');
-  const [language, setLanguage] = useState<Language>('zh');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
@@ -71,7 +70,7 @@ export default function App() {
     const newEntry: LeaderboardEntry = {
       name: playerName,
       score: score,
-      date: new Date().toLocaleDateString(language === 'zh' ? 'zh-TW' : 'en-US'),
+      date: new Date().toLocaleDateString('zh-TW'),
       mode: gameMode,
     };
 
@@ -91,7 +90,7 @@ export default function App() {
     setAnswered(false);
   };
 
-  const t = translations[language];
+  const t = translations;
 
   // Menu State
   if (gameState === 'menu') {
@@ -100,18 +99,13 @@ export default function App() {
         <MenuScreen
           playerName={playerName}
           gameMode={gameMode}
-          language={language}
           leaderboard={leaderboard}
           translations={t}
           onPlayerNameChange={setPlayerName}
           onGameModeChange={setGameMode}
           onStartGame={startGame}
-          onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
         />
-        <Footer
-          language={language}
-          onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-        />
+        <Footer />
       </Background>
     );
   }
@@ -127,7 +121,6 @@ export default function App() {
           currentCardIndex={currentCardIndex}
           totalCards={filteredCards.length}
           score={score}
-          language={language}
           answered={answered}
           selectedAnswer={selectedAnswer}
           translations={t}
@@ -135,10 +128,7 @@ export default function App() {
           onNextCard={nextCard}
           onBack={() => setGameState('menu')}
         />
-        <Footer
-          language={language}
-          onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-        />
+        <Footer />
       </Background>
     );
   }
@@ -156,16 +146,12 @@ export default function App() {
           score={score}
           filteredCardsLength={filteredCards.length}
           accuracy={accuracy}
-          language={language}
           playerName={playerName}
           leaderboard={leaderboard}
           translations={t}
           onBackToMenu={resetGame}
         />
-        <Footer
-          language={language}
-          onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-        />
+        <Footer />
       </Background>
     );
   }

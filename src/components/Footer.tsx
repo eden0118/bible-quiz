@@ -1,11 +1,8 @@
-import { FiGithub, FiGlobe } from 'react-icons/fi';
+import { FaGithub } from 'react-icons/fa';
 
-interface FooterProps {
-  language: 'zh' | 'en';
-  onToggleLanguage: () => void;
-}
+interface FooterProps {}
 
-export const Footer = ({ language, onToggleLanguage }: FooterProps) => {
+export const Footer = ({}: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -16,7 +13,7 @@ export const Footer = ({ language, onToggleLanguage }: FooterProps) => {
           © {currentYear} Eden Chang. All rights reserved.
         </div>
 
-        {/* Links and Language Toggle */}
+        {/* Links */}
         <div className="flex items-center gap-3 sm:gap-4">
           {/* GitHub Link */}
           <a
@@ -24,20 +21,10 @@ export const Footer = ({ language, onToggleLanguage }: FooterProps) => {
             target="_blank"
             rel="noopener noreferrer"
             title="GitHub Repository"
-            className="rounded-full border border-white/10 bg-white/5 p-2 text-neutral-400 transition-all hover:border-white/30 hover:bg-white/10 hover:text-white sm:p-2.5"
+            className="small-btn"
           >
-            <FiGithub size={12} />
+            <FaGithub size={12} />
           </a>
-
-          {/* Language Toggle */}
-          <button
-            onClick={onToggleLanguage}
-            title={language === 'zh' ? 'Switch to English' : '切換為中文'}
-            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[9px] font-black tracking-widest text-neutral-400 uppercase transition-all hover:border-white/30 hover:bg-white/10 hover:text-white sm:px-4 sm:py-2 sm:text-xs"
-          >
-            <FiGlobe size={12} />
-            <span>{language === 'zh' ? 'EN' : '中文'}</span>
-          </button>
         </div>
       </div>
     </footer>

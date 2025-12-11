@@ -26,7 +26,7 @@
   }
 
   .small-btn {
-    @apply inline-flex w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 py-1.5 text-sm font-medium transition-all duration-300 hover:shadow-lg disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50;
+    @apply rounded-full border border-white/10 bg-white/5 p-2 text-neutral-400 transition-all hover:border-white/30 hover:bg-white/10 hover:text-white;
   }
 
   .primary-btn {
@@ -42,7 +42,7 @@
   }
 
   .input {
-    @apply focus:border-primary w-full border-b-2 border-neutral-700 bg-transparent py-3 text-lg font-bold text-white placeholder-transparent transition-colors focus:outline-none;
+    @apply focus:border-primary text-foreground w-full border-b-2 border-neutral-700 bg-transparent py-3 text-lg font-bold placeholder-transparent transition-colors focus:outline-none;
   }
 
   .input-label {
@@ -57,6 +57,11 @@
     top: -0.875rem;
     font-size: 0.75rem;
     color: hsl(var(--color-primary));
+  }
+
+  /* result page */
+  .score-badge {
+    @apply mb-1 text-xs font-bold text-neutral-400;
   }
 }
 

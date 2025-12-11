@@ -1,10 +1,10 @@
 import { GlassCard } from '../components/GlassCard';
+import { FaRegThumbsUp, FaLightbulb } from 'react-icons/fa';
 
 interface FinishedScreenProps {
   score: number;
   filteredCardsLength: number;
   accuracy: number;
-  language: 'zh' | 'en';
   playerName: string;
   leaderboard: Array<{ name: string; score: number; date: string; mode: string }>;
   translations: any;
@@ -15,47 +15,44 @@ export const FinishedScreen = ({
   score,
   filteredCardsLength,
   accuracy,
-  language,
   playerName,
   leaderboard,
   translations: t,
   onBackToMenu,
 }: FinishedScreenProps) => (
-  <div className="flex flex-1 flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+  <div className="fle mx-auto w-full max-w-6xl flex-1 flex-col items-center justify-center space-y-5 p-6 sm:space-y-8 lg:p-8">
     {/* Result Card */}
-    <GlassCard className="relative mb-4 w-full max-w-full space-y-4 overflow-hidden p-4 text-center sm:mb-6 sm:max-w-2xl sm:space-y-6 sm:p-8 lg:mb-8 lg:space-y-8 lg:p-12">
+    <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 space-y-5 overflow-hidden px-6 py-8 sm:space-y-8 lg:max-w-lg">
       {/* Decorative gradient line */}
-      <div className="absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
+      <div className="from-primary absolute top-0 right-0 left-0 h-1 bg-linear-to-r via-red-500 to-purple-600"></div>
 
-      <div className="pt-2 sm:pt-4">
-        <h2 className="bg-linear-to-r from-orange-400 to-red-500 bg-clip-text text-2xl font-black text-transparent sm:text-3xl lg:text-5xl">
-          {accuracy >= 80 ? '🎉 ' : accuracy >= 60 ? '👍 ' : '💪 '}
-          {language === 'zh' ? '挑戰完成' : 'Challenge Complete'}
+      <div>
+        <h2 className="from-primary to-error bg-linear-to-r bg-clip-text text-center text-3xl font-black text-transparent sm:text-4xl lg:text-5xl">
+          {accuracy >= 80 ? <FaLightbulb /> : accuracy >= 60 ? <FaRegThumbsUp /> : '💪 '}
+          挑戰完成
         </h2>
       </div>
 
-      <div className="space-y-3 sm:space-y-4 lg:space-y-6">
+      <div className="flex w-full flex-col items-center gap-3 sm:gap-4 lg:gap-6">
         <div>
-          <p className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
-            {t.game.score}
-          </p>
-          <p className="text-3xl font-black text-orange-500 sm:text-4xl lg:text-6xl">{score}</p>
+          <p className="score-badge">{t.game.score}</p>
+          <span className="text-3xl font-black text-orange-500 sm:text-4xl lg:text-6xl">
+            {score}
+          </span>
         </div>
 
         <div className="mx-auto h-1 w-12 bg-neutral-700"></div>
 
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid w-full grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           <div className="flex flex-col items-center">
-            <p className="mb-2 text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
-              {language === 'zh' ? '答題數' : 'Questions'}
-            </p>
-            <p className="text-2xl font-black text-white lg:text-4xl">{filteredCardsLength}</p>
+            <p className="score-badge">{t.finished.answers}</p>
+            <span className="text-2xl font-black text-white lg:text-4xl">
+              {filteredCardsLength}
+            </span>
           </div>
           <div className="flex flex-col items-center">
-            <p className="mb-2 text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
-              {language === 'zh' ? '正確率' : 'Accuracy'}
-            </p>
-            <p className="text-2xl font-black text-orange-500 lg:text-4xl">{accuracy}%</p>
+            <p className="score-badge">{t.finished.accuracy}</p>
+            <span className="text-2xl font-black text-orange-500 lg:text-4xl">{accuracy}%</span>
           </div>
         </div>
       </div>
@@ -65,20 +62,20 @@ export const FinishedScreen = ({
           onClick={onBackToMenu}
           className="from-primary to-accent hover:shadow-primary/50 w-full rounded-lg bg-linear-to-r py-2 font-medium text-white transition-all hover:shadow-lg active:scale-95 sm:py-3 sm:text-base lg:py-4 lg:text-lg"
         >
-          {language === 'zh' ? '返回首頁' : 'Back to Menu'}
+          返回首頁
         </button>
       </div>
     </GlassCard>
 
     {/* Updated Leaderboard */}
     {leaderboard.length > 0 && (
-      <div className="w-full max-w-full sm:max-w-2xl">
-        <GlassCard className="relative overflow-hidden p-4 sm:p-6 lg:p-8">
+      <>
+        <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 space-y-5 overflow-hidden px-6 py-8 sm:space-y-8 lg:max-w-lg">
           <div className="absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
 
           <div className="pt-4 sm:pt-6">
             <h3 className="mb-4 text-center text-xs font-black tracking-[0.2em] text-neutral-400 uppercase sm:mb-6 lg:mb-8">
-              🏆 {language === 'zh' ? '排行榜 TOP 5' : 'Leaderboard Top 5'}
+              🏆 排行榜 TOP 5
             </h3>
             <div className="space-y-3 sm:space-y-4 lg:space-y-4">
               {leaderboard.slice(0, 5).map((entry, idx) => {
@@ -128,7 +125,7 @@ export const FinishedScreen = ({
             </div>
           </div>
         </GlassCard>
-      </div>
+      </>
     )}
   </div>
 );

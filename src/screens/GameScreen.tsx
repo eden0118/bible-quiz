@@ -1,12 +1,12 @@
 import { GlassCard } from '../components/GlassCard';
 import { BibleCard } from '../database';
+import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 
 interface GameScreenProps {
   currentCard: BibleCard;
   currentCardIndex: number;
   totalCards: number;
   score: number;
-  language: 'zh' | 'en';
   answered: boolean;
   selectedAnswer: number | null;
   translations: any;
@@ -20,7 +20,6 @@ export const GameScreen = ({
   currentCardIndex,
   totalCards,
   score,
-  language,
   answered,
   selectedAnswer,
   translations: t,
@@ -28,7 +27,7 @@ export const GameScreen = ({
   onNextCard,
   onBack,
 }: GameScreenProps) => {
-  const cardContent = currentCard.content[language];
+  const cardContent = currentCard.content;
   const progressPercent = ((currentCardIndex + 1) / totalCards) * 100;
 
   return (
@@ -58,11 +57,8 @@ export const GameScreen = ({
             <p className="text-xs font-black tracking-[0.2em] text-neutral-400 uppercase">
               {t.game.testaments[currentCard.testament]}
             </p>
-            <button
-              onClick={onBack}
-              className="small-btn bg-background/40 text-foreground transition-all hover:opacity-80"
-            >
-              {language === 'zh' ? '結束' : 'End'}
+            <button onClick={onBack} className="small-btn">
+              <FaExternalLinkSquareAlt size={14} />
             </button>
           </div>
         </div>
@@ -77,7 +73,7 @@ export const GameScreen = ({
       </div>
 
       {/* Card */}
-      <GlassCard className="psm:max-w-xl w-full max-w-md space-y-5 overflow-hidden px-6 py-8 sm:space-y-6">
+      <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 space-y-5 overflow-hidden px-6 py-8 sm:space-y-8 lg:max-w-lg">
         {/* Verse */}
         <p className="text-accent border-accent border-l-4 pl-3 text-sm leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg lg:leading-relaxed">
           {cardContent.verse}
@@ -115,10 +111,10 @@ export const GameScreen = ({
                         }`
                 }`}
               >
-                <span className="w-full bg-neutral-100/10 p-1 text-sm font-bold drop-shadow-2xl">
+                <span className="w-full bg-neutral-100/10 p-1 text-xs font-bold drop-shadow-2xl lg:text-base">
                   {String.fromCharCode(65 + idx)}.
                 </span>
-                <span className="flex min-h-16 items-center justify-center p-2 text-sm">
+                <span className="flex min-h-16 items-center justify-center p-2 text-sm lg:text-base">
                   {option}
                 </span>
               </button>
@@ -131,13 +127,7 @@ export const GameScreen = ({
       {answered && (
         <div className="w-full px-1">
           <button onClick={onNextCard} className="button secondary-btn">
-            {currentCardIndex < totalCards - 1
-              ? language === 'zh'
-                ? '下一題'
-                : 'Next'
-              : language === 'zh'
-                ? '完成'
-                : 'Finish'}
+            {currentCardIndex < totalCards - 1 ? '下一題' : '完成'}
           </button>
         </div>
       )}

@@ -4,25 +4,21 @@ import { Leaderboard } from '../components/Leaderboard';
 interface MenuScreenProps {
   playerName: string;
   gameMode: 'all' | 'old' | 'new';
-  language: 'zh' | 'en';
   leaderboard: Array<{ name: string; score: number; date: string; mode: string }>;
   translations: any;
   onPlayerNameChange: (name: string) => void;
   onGameModeChange: (mode: 'all' | 'old' | 'new') => void;
   onStartGame: () => void;
-  onToggleLanguage: () => void;
 }
 
 export const MenuScreen = ({
   playerName,
   gameMode,
-  language,
   leaderboard,
   translations: t,
   onPlayerNameChange,
   onGameModeChange,
   onStartGame,
-  onToggleLanguage,
 }: MenuScreenProps) => (
   <>
     <div className="flex flex-1 flex-col items-center justify-center p-6">
@@ -66,7 +62,7 @@ export const MenuScreen = ({
 
           {/* Mode Selection */}
           <div>
-            <label className="mb-3 block text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
+            <label className="text-foreground mb-3 block text-[10px] font-black tracking-[0.2em] uppercase">
               {t.menu.modeLabel}
             </label>
             <div className="flex gap-4">
@@ -80,7 +76,6 @@ export const MenuScreen = ({
                 </button>
               ))}
             </div>
-
           </div>
 
           {/* Start Button */}
@@ -99,9 +94,9 @@ export const MenuScreen = ({
         <div className="mt-8 w-full max-w-md">
           <div className="rounded-2xl border border-white/5 bg-black/20 p-6">
             <h3 className="mb-6 pl-2 text-left text-xs font-black tracking-widest text-neutral-400 uppercase">
-              🏆 {language === 'zh' ? '排行榜' : 'Leaderboard'}
+              🏆 排行榜
             </h3>
-            <Leaderboard leaderboard={leaderboard} playerName={playerName} language={language} />
+            <Leaderboard leaderboard={leaderboard} playerName={playerName} />
           </div>
         </div>
       )}

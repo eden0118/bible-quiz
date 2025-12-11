@@ -8,16 +8,11 @@ interface LeaderboardEntry {
 interface LeaderboardProps {
   leaderboard: LeaderboardEntry[];
   playerName: string;
-  language: 'zh' | 'en';
 }
 
-export const Leaderboard = ({ leaderboard, playerName, language }: LeaderboardProps) => {
+export const Leaderboard = ({ leaderboard, playerName }: LeaderboardProps) => {
   if (leaderboard.length === 0) {
-    return (
-      <p className="text-sm text-neutral-400 italic">
-        {language === 'zh' ? '暫無排行' : 'No leaderboard'}
-      </p>
-    );
+    return <p className="text-sm text-neutral-400 italic">暫無排行</p>;
   }
 
   return (
