@@ -34,11 +34,9 @@ export const FinishedScreen = ({
       </div>
 
       <div className="flex w-full flex-col items-center gap-3 sm:gap-4 lg:gap-6">
-        <div>
-          <p className="score-badge">{t.game.score}</p>
-          <span className="text-3xl font-black text-orange-500 sm:text-4xl lg:text-6xl">
-            {score}
-          </span>
+        <div className="flex flex-col items-center gap-1">
+          <span className="score-badge">{t.game.score}</span>
+          <span className="text-6xl font-black text-orange-500 lg:text-[8rem]">{score}</span>
         </div>
 
         <div className="mx-auto h-1 w-12 bg-neutral-700"></div>

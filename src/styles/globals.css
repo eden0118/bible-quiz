@@ -61,7 +61,7 @@
 
   /* result page */
   .score-badge {
-    @apply mb-1 text-xs font-bold text-neutral-400;
+    @apply mb-1 text-xs font-bold text-neutral-400 lg:text-base;
   }
 }
 
