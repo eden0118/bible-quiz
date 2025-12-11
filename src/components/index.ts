@@ -1,5 +1,4 @@
 // UI 基礎元件
-export { Button, type ButtonProps } from './Button';
 export { GlassCard, type GlassCardProps } from './GlassCard';
 
 // 業務相關元件

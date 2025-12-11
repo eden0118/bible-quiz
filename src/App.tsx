@@ -108,7 +108,10 @@ export default function App() {
           onStartGame={startGame}
           onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
         />
-        <Footer language={language} onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')} />
+        <Footer
+          language={language}
+          onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
+        />
       </Background>
     );
   }
@@ -132,7 +135,10 @@ export default function App() {
           onNextCard={nextCard}
           onBack={() => setGameState('menu')}
         />
-        <Footer language={language} onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')} />
+        <Footer
+          language={language}
+          onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
+        />
       </Background>
     );
   }
@@ -156,7 +162,10 @@ export default function App() {
           translations={t}
           onBackToMenu={resetGame}
         />
-        <Footer language={language} onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')} />
+        <Footer
+          language={language}
+          onToggleLanguage={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
+        />
       </Background>
     );
   }

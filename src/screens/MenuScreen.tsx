@@ -30,13 +30,13 @@ export const MenuScreen = ({
         {/* Header */}
         <div className="mb-12 text-left">
           <div className="mb-4 flex items-center gap-2">
-            <div className="h-1 w-8 rounded-full bg-orange-500"></div>
-            <div className="text-[10px] font-black tracking-[0.3em] text-neutral-400 uppercase">
+            <div className="bg-primary h-1 w-8 rounded-full"></div>
+            <div className="text-[10px] font-bold tracking-[0.3em] text-neutral-400 uppercase">
               {t.title.resources}
             </div>
           </div>
 
-          <h1 className="mb-4 text-6xl font-black leading-[0.85] tracking-tighter md:text-7xl">
+          <h1 className="mb-4 text-6xl leading-[0.85] font-bold tracking-tighter md:text-7xl">
             <span className="text-white">BIBLE</span>
             <br />
             <span className="bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
@@ -52,18 +52,16 @@ export const MenuScreen = ({
         {/* Form */}
         <div className="space-y-8">
           {/* Name Input */}
-          <div className="group relative">
+          <div className="relative">
             <input
               type="text"
               value={playerName}
               onChange={(e) => onPlayerNameChange(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && onStartGame()}
               placeholder=" "
-              className="peer w-full border-b-2 border-neutral-700 bg-transparent py-3 text-lg font-bold text-white placeholder-transparent transition-colors focus:border-orange-500 focus:outline-none"
+              className="input"
             />
-            <label className="absolute -top-3.5 left-0 text-xs font-bold tracking-wider text-orange-500 uppercase transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-orange-500">
-              {t.menu.nameLabel}
-            </label>
+            <label className="input-label">{t.menu.nameLabel}</label>
           </div>
 
           {/* Mode Selection */}
@@ -76,26 +74,19 @@ export const MenuScreen = ({
                 <button
                   key={mode}
                   onClick={() => onGameModeChange(mode)}
-                  className={`flex-1 rounded-xl border py-4 text-xs font-black tracking-widest uppercase transition-all ${
-                    gameMode === mode
-                      ? 'border-orange-500 bg-orange-500 text-white shadow-lg shadow-orange-500/30'
-                      : 'border-neutral-700 bg-transparent text-neutral-500 hover:border-orange-500/50 hover:text-orange-500'
-                  }`}
+                  className={`button text-sm ${gameMode === mode ? 'primary-btn' : 'outline-btn'}`}
                 >
                   {t.menu.modes[mode]}
                 </button>
               ))}
             </div>
+
           </div>
 
           {/* Start Button */}
           <button
             disabled={!playerName.trim()}
-            className={`flex w-full items-center justify-center gap-3 rounded-2xl py-5 text-lg font-black tracking-widest uppercase transition-all ${
-              !playerName.trim()
-                ? 'cursor-not-allowed bg-neutral-800 text-neutral-400'
-                : 'bg-white text-black shadow-2xl hover:scale-[1.02] hover:shadow-orange-500/20'
-            }`}
+            className="button primary-btn"
             onClick={onStartGame}
           >
             {t.menu.startBtn}

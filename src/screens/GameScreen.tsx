@@ -1,5 +1,4 @@
 import { GlassCard } from '../components/GlassCard';
-import { Button } from '../components/Button';
 import { BibleCard } from '../database';
 
 interface GameScreenProps {
@@ -33,62 +32,64 @@ export const GameScreen = ({
   const progressPercent = ((currentCardIndex + 1) / totalCards) * 100;
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="fle mx-auto max-w-6xl flex-1 flex-col items-center justify-center space-y-5 p-6 sm:space-y-8 lg:p-8">
       {/* Header */}
-      <div className="mb-4 w-full max-w-full sm:mb-6 sm:max-w-2xl lg:mb-8">
-        <div className="mb-4 flex items-center justify-between gap-4 sm:flex-row sm:gap-8 lg:mb-6">
-          <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
+      <div className="mb-4 w-full max-w-full p-2 sm:mb-6 sm:max-w-2xl lg:mb-8">
+        <div className="flex items-center justify-between gap-4 pb-2 sm:flex-row sm:gap-8">
+          {/* progress */}
+          <div className="flex flex-col items-center justify-center gap-1">
+            <span className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
               {t.game.progress}
-            </p>
-            <p className="text-2xl font-black text-white">
+            </span>
+            <span className="text-2xl font-black text-white">
               {currentCardIndex + 1}/{totalCards}
-            </p>
+            </span>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
+          {/* score */}
+          <div className="flex flex-col items-center justify-center gap-1">
+            <span className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
               {t.game.score}
-            </p>
-            <p className="text-2xl font-black text-orange-500">{score}</p>
+            </span>
+            <span className="text-2xl font-black text-orange-500">{score}</span>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
+          <div className="flex items-center gap-3">
+            <p className="text-xs font-black tracking-[0.2em] text-neutral-400 uppercase">
               {t.game.testaments[currentCard.testament]}
             </p>
-            <Button onClick={onBack} variant="secondary" className="text-xs sm:text-sm">
-              {language === 'zh' ? '返回' : 'Back'}
-            </Button>
+            <button
+              onClick={onBack}
+              className="small-btn bg-background/40 text-foreground transition-all hover:opacity-80"
+            >
+              {language === 'zh' ? '結束' : 'End'}
+            </button>
           </div>
         </div>
 
         {/* Progress Bar */}
         <div className="h-1 w-full overflow-hidden rounded-full bg-neutral-700 sm:h-2">
           <div
-            className="h-full bg-linear-to-r from-orange-400 to-red-500 transition-all duration-300"
+            className="from-primary to-accent h-full bg-linear-to-r transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           ></div>
         </div>
       </div>
 
       {/* Card */}
-      <GlassCard className="mb-4 w-full max-w-full space-y-3 overflow-hidden p-4 sm:mb-6 sm:max-w-2xl sm:space-y-4 sm:p-8 lg:mb-8 lg:space-y-6 lg:p-12">
-        {/* Decorative gradient line */}
-        <div className="h-1 rounded-full bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
-
+      <GlassCard className="psm:max-w-xl w-full max-w-md space-y-5 overflow-hidden px-6 py-8 sm:space-y-6">
         {/* Verse */}
-        <p className="border-l-4 border-orange-500 pl-3 text-xs italic leading-relaxed text-neutral-300 sm:pl-4 sm:text-sm lg:pl-6 lg:text-lg lg:leading-relaxed">
-          "{cardContent.verse}"
+        <p className="text-accent border-accent border-l-4 pl-3 text-sm leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg lg:leading-relaxed">
+          {cardContent.verse}
         </p>
 
         {/* Question */}
-        <h3 className="text-center text-lg font-bold text-white sm:text-xl lg:text-3xl">
+        <h3 className="text-foreground text-center text-lg font-medium lg:text-xl">
           {cardContent.question}
         </h3>
 
         {/* Options */}
-        <div className="grid grid-cols-1 gap-2 sm:gap-3 lg:gap-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4">
           {cardContent.options.map((option, idx) => {
             const isCorrect = idx === currentCard.answer;
             const isSelected = idx === selectedAnswer;
@@ -100,13 +101,13 @@ export const GameScreen = ({
                 key={idx}
                 onClick={() => onAnswer(idx)}
                 disabled={answered}
-                className={`rounded-lg border-2 p-3 text-left text-xs font-semibold transition-all duration-300 sm:rounded-lg sm:p-4 sm:text-sm lg:rounded-2xl lg:p-6 lg:text-lg ${
+                className={`flex flex-col items-center overflow-hidden rounded-lg border transition-all duration-300 lg:rounded-xl ${
                   showResult
                     ? isCorrect
-                      ? 'border-green-500 bg-green-500/20 text-green-300'
-                      : 'border-red-500 bg-red-500/20 text-red-300'
+                      ? 'border-success bg-success/20 text-success'
+                      : 'border-error bg-error/20 text-error'
                     : showCorrect
-                      ? 'border-green-500 bg-green-500/20 text-green-300'
+                      ? 'border-success bg-success/20 text-success'
                       : `${
                           answered
                             ? 'cursor-not-allowed border-neutral-600 bg-neutral-800/30'
@@ -114,43 +115,31 @@ export const GameScreen = ({
                         }`
                 }`}
               >
-                <span className="mr-3 font-bold">{String.fromCharCode(65 + idx)}.</span>
-                {option}
+                <span className="w-full bg-neutral-100/10 p-1 text-sm font-bold drop-shadow-2xl">
+                  {String.fromCharCode(65 + idx)}.
+                </span>
+                <span className="flex min-h-16 items-center justify-center p-2 text-sm">
+                  {option}
+                </span>
               </button>
             );
           })}
         </div>
-
-        {/* Answer Explanation */}
-        {answered && (
-          <div className="rounded-lg border-2 border-blue-500/50 bg-blue-500/20 p-3 sm:rounded-xl sm:p-4 lg:mt-8 lg:rounded-2xl lg:p-6">
-            <p className="mb-1 text-xs font-bold text-blue-300 sm:mb-2 sm:text-sm lg:text-base">
-              {t.game.answer}
-            </p>
-            <p className="text-xs text-blue-300 sm:text-sm lg:text-base">
-              {cardContent.options[currentCard.answer]}
-            </p>
-            <p className="mt-1 text-xs text-blue-400 sm:mt-2 sm:text-xs lg:text-sm">
-              {cardContent.reference}
-            </p>
-          </div>
-        )}
       </GlassCard>
 
       {/* Action Button */}
       {answered && (
-        <Button
-          onClick={onNextCard}
-          className="px-6 py-2 text-xs sm:px-8 sm:py-4 sm:text-base lg:px-12 lg:py-5 lg:text-xl"
-        >
-          {currentCardIndex < totalCards - 1
-            ? language === 'zh'
-              ? '下一題'
-              : 'Next'
-            : language === 'zh'
-              ? '完成'
-              : 'Finish'}
-        </Button>
+        <div className="w-full px-1">
+          <button onClick={onNextCard} className="button secondary-btn">
+            {currentCardIndex < totalCards - 1
+              ? language === 'zh'
+                ? '下一題'
+                : 'Next'
+              : language === 'zh'
+                ? '完成'
+                : 'Finish'}
+          </button>
+        </div>
       )}
     </div>
   );

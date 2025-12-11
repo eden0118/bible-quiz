@@ -3,96 +3,80 @@
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
-  /* 單一深色主題 */
-  :root {
-    /* ========== 色彩 Token ========== */
-    /* Primary: 漸層橙紅色 */
-    --color-primary: 33 81% 55%;
-    --color-primary-hover: 33 81% 60%;
-    --color-primary-active: 26 100% 50%;
-
-    /* Secondary: 中性灰色 */
-    --color-secondary: 0 0% 20%;
-    --color-secondary-hover: 0 0% 28%;
-    --color-secondary-active: 0 0% 35%;
-
-    /* Accent */
-    --color-accent: 39 100% 50%;
-
-    /* Semantic colors */
-    --color-success: 142 72% 29%;
-    --color-warning: 38 92% 50%;
-    --color-error: 0 84% 60%;
-
-    /* Background & Text */
-    --color-background: 0 0% 3%;
-    --color-foreground: 0 0% 98%;
-    --color-muted: 0 0% 20%;
-    --color-muted-foreground: 0 0% 64%;
-    --color-border: 0 0% 15%;
-
-    /* Card */
-    --color-card-bg: 33 33 33;
-    --color-card-border: 255 255 255;
-
-    /* ========== Typography Token ========== */
-    --font-sans: 'Noto Sans TC', sans-serif;
-    --font-serif: 'Noto Serif TC', serif;
-
-
-  }
-
   html {
-    @apply scroll-smooth;
-    background-color: hsl(var(--color-background));
-    color: hsl(var(--color-foreground));
+    @apply bg-background text-foreground scroll-smooth;
   }
 
   body {
-    @apply min-h-screen;
-    background-color: hsl(var(--color-background));
-    color: hsl(var(--color-foreground));
-    font-family: var(--font-sans);
-    line-height: var(--line-height-normal);
+    @apply bg-background text-foreground min-h-screen font-sans;
   }
 }
 
-/* ========== COMPONENT UTILITIES ========== */
 @layer utilities {
-  /* 玻璃態效果 */
   .glass {
     @apply rounded-2xl border border-white/10 bg-neutral-900/60 backdrop-blur-2xl;
   }
 
-  /* 無障礙焦點 */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+    @apply focus:ring-primary focus:ring-offset-background focus:ring-2 focus:ring-offset-2 focus:outline-none;
   }
 
-  /* 禁用狀態 */
-  .disabled-state {
-    @apply cursor-not-allowed opacity-50;
+  .button {
+    @apply inline-flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-base font-medium transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .small-btn {
+    @apply inline-flex w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg px-2 py-1.5 text-sm font-medium transition-all duration-300 hover:shadow-lg disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .primary-btn {
+    @apply from-primary to-accent hover:shadow-primary/10 text-foreground bg-gradient-to-r active:scale-95;
+  }
+
+  .secondary-btn {
+    @apply bg-secondary hover:bg-secondary/50 text-background active:scale-95;
+  }
+
+  .outline-btn {
+    @apply border-muted text-muted-foreground hover:bg-muted/50 border hover:shadow-lg active:scale-95;
+  }
+
+  .input {
+    @apply focus:border-primary w-full border-b-2 border-neutral-700 bg-transparent py-3 text-lg font-bold text-white placeholder-transparent transition-colors focus:outline-none;
+  }
+
+  .input-label {
+    @apply absolute left-0 text-xs font-bold tracking-wider uppercase transition-all;
+    color: hsl(var(--color-muted-foreground));
+    top: 0.875rem;
+    font-size: 1rem;
+  }
+
+  .input:focus ~ .input-label,
+  .input:not(:placeholder-shown) ~ .input-label {
+    top: -0.875rem;
+    font-size: 0.75rem;
+    color: hsl(var(--color-primary));
   }
 }
 
 @theme {
-  --color-primary: var(--color-primary);
-  --color-secondary: var(--color-secondary);
-  --color-accent: var(--color-accent);
-  --color-success: var(--color-success);
-  --color-warning: var(--color-warning);
-  --color-error: var(--color-error);
-  --color-background: var(--color-background);
-  --color-foreground: var(--color-foreground);
-  --color-muted: var(--color-muted);
-  --color-muted-foreground: var(--color-muted-foreground);
-  --color-border: var(--color-border);
-  --color-card-bg: var(--color-card-bg);
-  --color-card-border: var(--color-card-border);
+  --color-primary: oklch(55.5% 0.163 48.998);
+  --color-accent: oklch(75% 0.183 55.934);
+  --color-secondary: #f0f0f0;
+  --color-success: oklch(72.3% 0.219 149.579);
+  --color-error: oklch(63.7% 0.237 25.331);
+  --color-background: #080808;
+  --color-foreground: #f9f9f9;
+  --color-muted: #333333;
+  --color-muted-foreground: #a3a3a3;
+  --color-border: #262626;
 
-  --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
+  /* font */
+  --font-sans: 'Noto Sans TC', sans-serif;
+  --font-serif: 'Noto Serif TC', serif;
 
+  /* animate */
   --animate-blob: blob 7s infinite;
 
   @keyframes blob {
@@ -110,3 +94,9 @@
     }
   }
 }
+
+/*
+        secondary: 'bg-secondary text-foreground hover:bg-secondary/90 active:scale-95',
+        ghost: 'border border-border text-foreground hover:bg-muted/50 active:scale-95',
+        danger: 'bg-error text-white hover:shadow-lg hover:shadow-error/50 active:scale-95',
+        accent: 'bg-accent text-white hover:shadow-lg hover:shadow-accent/50 active:scale-95', */

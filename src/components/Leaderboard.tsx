@@ -46,10 +46,8 @@ export const Leaderboard = ({ leaderboard, playerName, language }: LeaderboardPr
               {idx + 1}
             </span>
             <div className="text-left">
-              <div className="text-sm font-bold leading-tight text-neutral-200">
-                {entry.name}
-              </div>
-              <div className="text-[9px] font-black tracking-wider uppercase text-neutral-400 opacity-70">
+              <div className="text-sm leading-tight font-bold text-neutral-200">{entry.name}</div>
+              <div className="text-[9px] font-black tracking-wider text-neutral-400 uppercase opacity-70">
                 {entry.mode}
               </div>
             </div>

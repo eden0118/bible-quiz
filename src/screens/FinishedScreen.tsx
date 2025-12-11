@@ -1,5 +1,4 @@
 import { GlassCard } from '../components/GlassCard';
-import { Button } from '../components/Button';
 
 interface FinishedScreenProps {
   score: number;
@@ -26,7 +25,7 @@ export const FinishedScreen = ({
     {/* Result Card */}
     <GlassCard className="relative mb-4 w-full max-w-full space-y-4 overflow-hidden p-4 text-center sm:mb-6 sm:max-w-2xl sm:space-y-6 sm:p-8 lg:mb-8 lg:space-y-8 lg:p-12">
       {/* Decorative gradient line */}
-      <div className="absolute right-0 left-0 top-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
+      <div className="absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
 
       <div className="pt-2 sm:pt-4">
         <h2 className="bg-linear-to-r from-orange-400 to-red-500 bg-clip-text text-2xl font-black text-transparent sm:text-3xl lg:text-5xl">
@@ -50,9 +49,7 @@ export const FinishedScreen = ({
             <p className="mb-2 text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
               {language === 'zh' ? '答題數' : 'Questions'}
             </p>
-            <p className="text-2xl font-black text-white lg:text-4xl">
-              {filteredCardsLength}
-            </p>
+            <p className="text-2xl font-black text-white lg:text-4xl">{filteredCardsLength}</p>
           </div>
           <div className="flex flex-col items-center">
             <p className="mb-2 text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
@@ -64,12 +61,12 @@ export const FinishedScreen = ({
       </div>
 
       <div className="space-y-2 pt-4 sm:space-y-3 sm:pt-6 lg:space-y-4">
-        <Button
+        <button
           onClick={onBackToMenu}
-          className="w-full py-2 text-sm sm:py-3 sm:text-base lg:py-4 lg:text-lg"
+          className="from-primary to-accent hover:shadow-primary/50 w-full rounded-lg bg-linear-to-r py-2 font-medium text-white transition-all hover:shadow-lg active:scale-95 sm:py-3 sm:text-base lg:py-4 lg:text-lg"
         >
           {language === 'zh' ? '返回首頁' : 'Back to Menu'}
-        </Button>
+        </button>
       </div>
     </GlassCard>
 
@@ -77,7 +74,7 @@ export const FinishedScreen = ({
     {leaderboard.length > 0 && (
       <div className="w-full max-w-full sm:max-w-2xl">
         <GlassCard className="relative overflow-hidden p-4 sm:p-6 lg:p-8">
-          <div className="absolute right-0 left-0 top-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
+          <div className="absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
 
           <div className="pt-4 sm:pt-6">
             <h3 className="mb-4 text-center text-xs font-black tracking-[0.2em] text-neutral-400 uppercase sm:mb-6 lg:mb-8">
@@ -123,9 +120,7 @@ export const FinishedScreen = ({
                       <p className="text-lg font-black text-orange-500 sm:text-xl lg:text-2xl">
                         {entry.score}
                       </p>
-                      <p className="text-[10px] text-neutral-400">
-                        {entry.date}
-                      </p>
+                      <p className="text-[10px] text-neutral-400">{entry.date}</p>
                     </div>
                   </div>
                 );
