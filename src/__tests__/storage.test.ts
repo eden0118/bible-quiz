@@ -143,7 +143,6 @@ describe('storage', () => {
   describe('GameProgress operations', () => {
     it('應該保存和讀取遊戲進度', () => {
       const progress: GameProgressState = {
-        gameState: 'playing',
         playerName: 'TestPlayer',
         gameMode: 'all',
         currentCardIndex: 2,
@@ -168,7 +167,6 @@ describe('storage', () => {
 
     it('應該清除遊戲進度', () => {
       const progress: GameProgressState = {
-        gameState: 'playing',
         playerName: 'TestPlayer',
         gameMode: 'all',
         currentCardIndex: 0,
@@ -196,7 +194,7 @@ describe('storage', () => {
       const result: GameResultState = {
         playerName: 'TestPlayer',
         score: 80,
-        gameTime: 120,
+        quizTime: 120,
         correctCount: 8,
         totalQuestions: 10,
         accuracy: 80,
@@ -217,7 +215,7 @@ describe('storage', () => {
       const result: GameResultState = {
         playerName: 'TestPlayer',
         score: 80,
-        gameTime: 120,
+        quizTime: 120,
         correctCount: 8,
         totalQuestions: 10,
         accuracy: 80,
