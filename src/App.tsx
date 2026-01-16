@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { bibleCards, translations, BibleCard } from './database';
+import { bibleCards, advancedBibleCards, translations, BibleCard } from './database';
 import { Background, Footer } from './components';
 import { MenuScreen, GameScreen, FinishedScreen } from './pages';
 import { saveGameRecord } from './lib/storage';
@@ -34,6 +34,7 @@ export default function App() {
     gameState,
     playerName,
     gameMode,
+    gameDifficulty,
     currentCardIndex,
     answered,
     selectedAnswer,
@@ -49,6 +50,7 @@ export default function App() {
     setGameState,
     setPlayerName,
     setGameMode,
+    setGameDifficulty,
     setCurrentCardIndex,
     setAnswered,
     setSelectedAnswer,
@@ -86,13 +88,23 @@ export default function App() {
   // 初始化遊戲卡片（只在遊戲開始時執行一次）
   useEffect(() => {
     if (gameState === 'playing' && gameCards.length === 0) {
+      // 根據難度選擇卡片數據集
+      const cardsToFilter = gameDifficulty === 'advanced' ? advancedBibleCards : bibleCards;
       // 使用 gameLogic.ts 中的篩選函數
-      const filteredCards = filterCards(bibleCards, gameMode, CARDS_PER_GAME);
+      const filteredCards = filterCards(cardsToFilter, gameMode, CARDS_PER_GAME);
       setGameCards(filteredCards);
       setCardsReady(true);
       setCardStartTime(Date.now());
     }
-  }, [gameState, gameMode, gameCards.length, setGameCards, setCardsReady, setCardStartTime]);
+  }, [
+    gameState,
+    gameMode,
+    gameDifficulty,
+    gameCards.length,
+    setGameCards,
+    setCardsReady,
+    setCardStartTime,
+  ]);
 
   // 當卡片索引改變時，重新計時
   useEffect(() => {
@@ -203,9 +215,11 @@ export default function App() {
         <MenuScreen
           playerName={playerName}
           gameMode={gameMode}
+          gameDifficulty={gameDifficulty}
           translations={t}
           onPlayerNameChange={setPlayerName}
           onGameModeChange={setGameMode}
+          onGameDifficultyChange={setGameDifficulty}
           onStartGame={handleStartGame}
         />
         <Footer />

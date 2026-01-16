@@ -19,18 +19,22 @@ import { FaHandPointLeft } from 'react-icons/fa';
 interface MenuScreenProps {
   playerName: string;
   gameMode: 'all' | 'old' | 'new';
+  gameDifficulty: 'beginner' | 'advanced';
   translations: any;
   onPlayerNameChange: (name: string) => void;
   onGameModeChange: (mode: 'all' | 'old' | 'new') => void;
+  onGameDifficultyChange: (difficulty: 'beginner' | 'advanced') => void;
   onStartGame: () => void;
 }
 
 export const MenuScreen = ({
   playerName,
   gameMode,
+  gameDifficulty,
   translations: t,
   onPlayerNameChange,
   onGameModeChange,
+  onGameDifficultyChange,
   onStartGame,
 }: MenuScreenProps) => (
   <div className="mx-auto flex w-full max-w-xl min-w-sm flex-1 flex-col space-y-5 p-6 sm:space-y-8 lg:p-8">
@@ -38,12 +42,15 @@ export const MenuScreen = ({
       {/* Header */}
       <div className="mb-12 text-left">
         <div className="mb-4 flex items-center gap-2">
+          {/* deco */}
           <div className="bg-primary h-1 w-8 rounded-full"></div>
+          {/* version */}
           <div className="text-[10px] font-bold tracking-[0.3em] text-neutral-400 uppercase">
             {t.title.resources}
           </div>
         </div>
 
+        {/* title */}
         <h1 className="mb-4 text-6xl leading-[0.85] font-bold tracking-tighter md:text-7xl">
           <span className="text-white">{t.title.main.split(' ')[0]}</span>
           <br />
@@ -58,7 +65,7 @@ export const MenuScreen = ({
       </div>
 
       {/* Form */}
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Name Input */}
         <div className="relative">
           <input
@@ -98,8 +105,30 @@ export const MenuScreen = ({
           </div>
         </div>
 
+        {/* Difficulty Selection */}
+        <div>
+          <label className="text-foreground mb-3 block text-xs tracking-[0.2em] uppercase">
+            難度選擇
+          </label>
+          <div className="flex gap-4">
+            {(['beginner', 'advanced'] as const).map((difficulty) => (
+              <button
+                key={difficulty}
+                onClick={() => onGameDifficultyChange(difficulty)}
+                className={`small-btn ${gameDifficulty === difficulty ? 'bg-primary' : 'bg-primary-transparent border-muted-foreground border'}`}
+              >
+                {difficulty === 'beginner' ? '入門' : '進階'}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Start Button */}
-        <button disabled={!playerName.trim()} className="button primary-btn" onClick={onStartGame}>
+        <button
+          disabled={!playerName.trim()}
+          className="button primary-btn mt-1"
+          onClick={onStartGame}
+        >
           {t.menu.startBtn}
         </button>
       </div>

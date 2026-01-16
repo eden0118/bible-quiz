@@ -22,12 +22,14 @@ import {
 // ========== 類型定義 ==========
 export type GameState = 'menu' | 'playing' | 'finished';
 export type GameMode = 'all' | 'old' | 'new';
+export type GameDifficulty = 'beginner' | 'advanced';
 
 export interface GameStoreState {
   // ========== 基礎狀態 ==========
   gameState: GameState;
   playerName: string;
   gameMode: GameMode;
+  gameDifficulty: GameDifficulty;
 
   // ========== 遊戲進度狀態 ==========
   currentCardIndex: number;
@@ -61,6 +63,7 @@ export interface GameStoreState {
   setGameState: (state: GameState) => void;
   setPlayerName: (name: string) => void;
   setGameMode: (mode: GameMode) => void;
+  setGameDifficulty: (difficulty: GameDifficulty) => void;
   setCurrentCardIndex: (index: number) => void;
   setAnswered: (answered: boolean) => void;
   setSelectedAnswer: (index: number | null) => void;
@@ -101,6 +104,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   gameState: 'menu',
   playerName: '',
   gameMode: 'all',
+  gameDifficulty: 'beginner',
   currentCardIndex: 0,
   answered: false,
   selectedAnswer: null,
@@ -118,6 +122,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   setGameState: (state) => set({ gameState: state }),
   setPlayerName: (name) => set({ playerName: name }),
   setGameMode: (mode) => set({ gameMode: mode }),
+  setGameDifficulty: (difficulty) => set({ gameDifficulty: difficulty }),
   setCurrentCardIndex: (index) => set({ currentCardIndex: index }),
   setAnswered: (answered) => set({ answered }),
   setSelectedAnswer: (index) => set({ selectedAnswer: index }),
@@ -176,6 +181,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       gameState: 'menu',
       playerName: '',
       gameMode: 'all',
+      gameDifficulty: 'beginner',
       currentCardIndex: 0,
       answered: false,
       selectedAnswer: null,
