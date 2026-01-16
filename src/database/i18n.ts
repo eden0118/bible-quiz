@@ -15,7 +15,7 @@ export const translations = {
   title: {
     main: 'BIBLE WISDOM',
     sub: '聖經內容還記得多少？快來挑戰吧！',
-    resources: 'December 2025',
+    resources: 'January 2026',
   },
   menu: {
     nameLabel: '挑戰者',

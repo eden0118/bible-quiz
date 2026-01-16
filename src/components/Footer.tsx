@@ -7,7 +7,7 @@ export const Footer = ({}: FooterProps) => {
 
   return (
     <footer className="relative right-0 bottom-0 left-0 z-30 border-t border-white/5 bg-black/40 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4">
-      <div className="mx-auto flex max-w-md items-center justify-between gap-4">
+      <div className="mx-auto flex w-full max-w-md items-center justify-between gap-4 lg:max-w-lg">
         {/* Copyright */}
         <div className="text-[8px] font-bold tracking-[0.15em] text-neutral-500 uppercase sm:text-[10px]">
           © {currentYear} Bible Wisdom. All rights reserved.

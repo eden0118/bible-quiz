@@ -89,16 +89,14 @@ export const GameScreen = ({
       </div>
 
       {/* Card */}
-      <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 overflow-hidden px-6 py-8 sm:space-y-7 lg:max-w-lg">
+      <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 overflow-hidden px-6 py-8 sm:space-y-7 md:px-8 md:py-10 lg:max-w-lg">
         {/* Verse */}
-        <p className="text-accent border-accent border-l-4 pl-3 leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg lg:leading-relaxed">
+        <p className="text-accent border-accent border-l-4 pl-3 leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg">
           {cardContent.verse}
         </p>
 
         {/* Question */}
-        <h3 className="text-foreground text-center text-lg font-medium lg:text-xl">
-          {cardContent.question}
-        </h3>
+        <h3 className="text-foreground text-lg font-medium lg:text-xl">{cardContent.question}</h3>
 
         {/* Options */}
         <div className="grid grid-cols-2 gap-2 sm:gap-4">
