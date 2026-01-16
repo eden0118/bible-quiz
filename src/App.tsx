@@ -23,7 +23,7 @@ import { filterCards, calculateScore, calculateGameTime, calculateAccuracy } fro
 import { useGameStore } from './lib/gameStore';
 
 //  開發階段調整點：修改此數值以改變每次遊戲的題數
-const CARDS_PER_GAME = 5;
+const CARDS_PER_GAME = 10;
 
 const t = translations;
 
