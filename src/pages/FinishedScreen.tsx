@@ -14,11 +14,10 @@
  */
 
 import { GlassCard } from '../components/GlassCard';
-import { Leaderboard } from '../components/Leaderboard';
 
 interface FinishedScreenProps {
   score: number;
-  filteredCardsLength: number;
+  totalCards: number;
   accuracy: number;
   playerName: string;
   translations: any;
@@ -27,7 +26,7 @@ interface FinishedScreenProps {
 
 export const FinishedScreen = ({
   score,
-  filteredCardsLength,
+  totalCards,
   accuracy,
   playerName,
   translations: t,
@@ -41,8 +40,11 @@ export const FinishedScreen = ({
 
       <div>
         <h2 className="from-primary to-error bg-linear-to-r bg-clip-text text-center text-3xl font-black text-transparent sm:text-4xl lg:text-5xl">
-          {accuracy >= 80 ? '🎉 ' : accuracy >= 60 ? '👍 ' : '💪 '}
-          挑戰完成
+          {accuracy >= 80
+            ? t.finished.subtitle('🎉')
+            : accuracy >= 60
+              ? t.finished.subtitle('👍')
+              : t.finished.subtitle('💪')}
         </h2>
       </div>
 
@@ -57,9 +59,7 @@ export const FinishedScreen = ({
         <div className="grid w-full grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           <div className="flex flex-col items-center">
             <p className="score-badge">{t.finished.answers}</p>
-            <span className="text-2xl font-black text-white lg:text-4xl">
-              {filteredCardsLength}
-            </span>
+            <span className="text-2xl font-black text-white lg:text-4xl">{totalCards}</span>
           </div>
           <div className="flex flex-col items-center">
             <p className="score-badge">{t.finished.accuracy}</p>
@@ -73,20 +73,8 @@ export const FinishedScreen = ({
           onClick={onBackToMenu}
           className="from-primary to-accent hover:shadow-primary/50 w-full rounded-lg bg-linear-to-r py-2 font-medium text-white transition-all hover:shadow-lg active:scale-95 sm:py-3 sm:text-base lg:py-4 lg:text-lg"
         >
-          返回首頁
+          {t.finished.backBtn}
         </button>
-      </div>
-    </GlassCard>
-
-    {/* Updated Leaderboard */}
-    <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 space-y-5 overflow-hidden px-6 py-8 sm:space-y-8 lg:max-w-lg">
-      <div className="absolute top-0 right-0 left-0 h-1 bg-linear-to-r from-orange-500 via-red-500 to-purple-600"></div>
-
-      <div className="pt-4 sm:pt-6">
-        <h3 className="mb-4 text-center text-xs font-black tracking-[0.2em] text-neutral-400 uppercase sm:mb-6 lg:mb-8">
-          🏆 排行榜 TOP 5
-        </h3>
-        <Leaderboard playerName={playerName} limit={5} refreshTrigger={Date.now()} />
       </div>
     </GlassCard>
   </div>

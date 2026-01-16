@@ -7,7 +7,6 @@
  * - BibleCard: 完整卡片資料 (ID、分類、答案、內容)
  * - bibleCards: 所有卡片資料集合
  *
- * 注意：內容已簡化為單一語言（繁體中文）
  */
 
 export type Testament = 'old' | 'new';

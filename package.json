@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Bible Wisdom Flashcards - Interactive Bible learning game",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 1178",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\" \"*.{json,js,ts}\"",
@@ -14,11 +14,11 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.87.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-icons": "^5.5.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.17",

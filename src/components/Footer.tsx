@@ -6,11 +6,11 @@ export const Footer = ({}: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative right-0 bottom-0 left-0 z-40 border-t border-white/5 bg-black/40 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+    <footer className="relative right-0 bottom-0 left-0 z-30 border-t border-white/5 bg-black/40 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4">
+      <div className="mx-auto flex max-w-md items-center justify-between gap-4">
         {/* Copyright */}
-        <div className="text-[8px] font-black tracking-[0.15em] text-neutral-500 uppercase sm:text-xs">
-          © {currentYear} Eden Chang. All rights reserved.
+        <div className="text-[8px] font-bold tracking-[0.15em] text-neutral-500 uppercase sm:text-[10px]">
+          © {currentYear} Bible Wisdom. All rights reserved.
         </div>
 
         {/* Links */}

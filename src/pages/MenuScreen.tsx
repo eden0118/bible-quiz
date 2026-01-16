@@ -14,7 +14,6 @@
  */
 
 import { GlassCard } from '../components/GlassCard';
-import { Leaderboard } from '../components/Leaderboard';
 import { FaHandPointLeft } from 'react-icons/fa';
 
 interface MenuScreenProps {
@@ -46,10 +45,10 @@ export const MenuScreen = ({
         </div>
 
         <h1 className="mb-4 text-6xl leading-[0.85] font-bold tracking-tighter md:text-7xl">
-          <span className="text-white">BIBLE</span>
+          <span className="text-white">{t.title.main.split(' ')[0]}</span>
           <br />
           <span className="bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-            WISDOM
+            {t.title.main.split(' ')[1]}
           </span>
         </h1>
 
@@ -66,8 +65,8 @@ export const MenuScreen = ({
             type="text"
             value={playerName}
             onChange={(e) => onPlayerNameChange(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && onStartGame()}
-            placeholder=" "
+            onKeyPress={(e) => e.key === 'Enter' && playerName.trim() && onStartGame()}
+            placeholder={t.menu.namePlaceholder}
             className="input cursor-pointer"
           />
           <label className="input-label">{t.menu.nameLabel}</label>
@@ -104,15 +103,6 @@ export const MenuScreen = ({
           {t.menu.startBtn}
         </button>
       </div>
-    </GlassCard>
-
-    {/* Leaderboard Section */}
-
-    <GlassCard className="space-y-4 border-white/10 p-8">
-      <h3 className="ml-1 text-left text-sm font-black tracking-widest text-neutral-400">
-        🏆 排行榜
-      </h3>
-      <Leaderboard playerName={playerName} limit={5} />
     </GlassCard>
   </div>
 );

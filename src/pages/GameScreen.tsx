@@ -15,7 +15,7 @@
 
 import { GlassCard } from '../components/GlassCard';
 import { BibleCard } from '../database';
-import { FaExternalLinkSquareAlt } from 'react-icons/fa';
+import { FaSyncAlt } from 'react-icons/fa';
 
 interface GameScreenProps {
   currentCard: BibleCard;
@@ -74,7 +74,7 @@ export const GameScreen = ({
               className="hover:text-error cursor-pointer text-neutral-400"
               title="離開"
             >
-              <FaExternalLinkSquareAlt size={20} />
+              <FaSyncAlt size={20} />
             </button>
           </div>
         </div>
@@ -128,7 +128,7 @@ export const GameScreen = ({
                 }`}
               >
                 <span className="w-full bg-neutral-100/10 p-1 text-xs font-bold drop-shadow-2xl lg:text-base">
-                  {String.fromCharCode(65 + idx)}.
+                  {t.game.option(String.fromCharCode(65 + idx))}
                 </span>
                 <span className="flex min-h-16 items-center justify-center p-2 text-sm lg:text-base">
                   {option}
@@ -143,12 +143,12 @@ export const GameScreen = ({
       {answered ? (
         <div className="w-full px-1">
           <button onClick={onNextCard} className="button secondary-btn">
-            {currentCardIndex < totalCards - 1 ? '下一題' : '完成'}
+            {currentCardIndex < totalCards - 1 ? t.game.nextBtn : t.game.finishBtn}
           </button>
         </div>
       ) : (
         <span className="w-full text-center text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
-          {t.game.testaments[currentCard.testament]}
+          {t.game.pleaseAnswer}
         </span>
       )}
     </div>

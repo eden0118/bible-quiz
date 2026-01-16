@@ -7,186 +7,177 @@
  * - 實現計分系統
  * - 管理本地排行榜 (localStorage)
  *
- * 開發調整點：
- * - CARDS_PER_GAME: 每次遊戲的題數（目前為 5 題，開發階段可調整）
+ * 架構設計：
+ * - 業務邏輯分離在 gameLogic.ts
+ * - 本地存儲在 storage.ts
+ * - 狀態管理使用 Zustand (gameStore.ts)
+ * - UI 文字集中管理在 i18n.ts
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { bibleCards, translations, BibleCard } from './database';
 import { Background, Footer } from './components';
-import { MenuScreen, GameScreen, FinishedScreen } from './screens';
-import { saveGameRecord } from './lib/supabase';
+import { MenuScreen, GameScreen, FinishedScreen } from './pages';
+import { saveGameRecord } from './lib/storage';
+import { filterCards, calculateScore, calculateGameTime, calculateAccuracy } from './lib/gameLogic';
+import { useGameStore } from './lib/gameStore';
 
-// --- Types ---
-type GameState = 'menu' | 'playing' | 'finished';
-type GameMode = 'all' | 'old' | 'new';
+//  開發階段調整點：修改此數值以改變每次遊戲的題數
+const CARDS_PER_GAME = 10;
 
-// 🎯 開發階段調整點：修改此數值以改變每次遊戲的題數
-const CARDS_PER_GAME = 5;
-
-// ⏱️ 計時計分規則
-// 3秒內 10分，5秒內 9分，10秒內8分，15秒內7分，20秒內6分，超過20秒 5分
-const SCORE_BY_TIME = [
-  { timeLimit: 3, score: 10 },
-  { timeLimit: 5, score: 9 },
-  { timeLimit: 10, score: 8 },
-  { timeLimit: 15, score: 7 },
-  { timeLimit: 20, score: 6 },
-];
-const BASE_SCORE = 5;
-
-// 根據答題時間計算分數
-const calculateScore = (timeInSeconds: number): number => {
-  for (const tier of SCORE_BY_TIME) {
-    if (timeInSeconds <= tier.timeLimit) {
-      return tier.score;
-    }
-  }
-  return BASE_SCORE;
-};
+const t = translations;
 
 // --- Main App Component ---
 export default function App() {
-  // State Management
-  const [gameState, setGameState] = useState<GameState>('menu');
-  const [playerName, setPlayerName] = useState('');
-  const [gameMode, setGameMode] = useState<GameMode>('all');
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [answered, setAnswered] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [correctCount, setCorrectCount] = useState(0);
+  // ========== 使用 Zustand Store 管理狀態 ==========
+  const {
+    gameState,
+    playerName,
+    gameMode,
+    currentCardIndex,
+    answered,
+    selectedAnswer,
+    score,
+    correctCount,
+    gameCards,
+    cardsReady,
+    gameStartTime,
+    cardStartTime,
+    setGameState,
+    setPlayerName,
+    setGameMode,
+    setCurrentCardIndex,
+    setAnswered,
+    setSelectedAnswer,
+    addScore,
+    incrementCorrectCount,
+    setGameCards,
+    setCardsReady,
+    setCardStartTime,
+    startGame,
+    endGame,
+    resetGame,
+    loadSavedProgress,
+    loadSavedResult,
+    saveProgress,
+    setGameResult,
+    nextCard: storeNextCard,
+  } = useGameStore();
 
-  // 🔒 使用 Ref 儲存遊戲卡片列表，確保遊戲中不會重新生成
-  const gameCardsRef = useRef<BibleCard[]>([]);
-  const [cardsReady, setCardsReady] = useState(false);
+  // ========== 時間計算 Ref ==========
+  const cardStartTimeRef = useRef<number | null>(cardStartTime);
+  const gameStartTimeRef = useRef<number | null>(gameStartTime);
 
-  // ⏱️ 計時相關狀態
-  const [cardStartTime, setCardStartTime] = useState<number | null>(null);
-  const [gameStartTime, setGameStartTime] = useState<number | null>(null);
-  const cardTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // ========== 初始化：檢查是否有已保存的遊戲進度或結果 ==========
+  useEffect(() => {
+    // 先檢查是否有已保存的結果（結束狀態）
+    if (!loadSavedResult()) {
+      // 若沒有結果，檢查是否有已保存的遊戲進度（進行中）
+      loadSavedProgress();
+    }
+  }, []);
 
   // 初始化遊戲卡片（只在遊戲開始時執行一次）
   useEffect(() => {
-    if (gameState === 'playing' && gameCardsRef.current.length === 0) {
-      // 📋 題目選擇邏輯：
-      // 1. 根據遊戲模式篩選卡片 (all/old/new)
-      // 2. Fisher-Yates 隨機打亂順序
-      // 3. 取前 N 題 (CARDS_PER_GAME = 5)
-
-      // 步驟 1: 根據模式篩選卡片
-      let filtered = bibleCards.filter((card) => {
-        if (gameMode === 'all') return true;
-        return card.testament === gameMode;
-      });
-
-      // 步驟 2: Fisher-Yates 隨機打亂算法
-      const shuffled = [...filtered].sort(() => Math.random() - 0.5);
-
-      // 步驟 3: 取前 CARDS_PER_GAME 題
-      gameCardsRef.current = shuffled.slice(0, CARDS_PER_GAME);
+    if (gameState === 'playing' && gameCards.length === 0) {
+      // 使用 gameLogic.ts 中的篩選函數
+      const filteredCards = filterCards(bibleCards, gameMode, CARDS_PER_GAME);
+      setGameCards(filteredCards);
       setCardsReady(true);
-      // 記錄第一題的開始時間
       setCardStartTime(Date.now());
     }
-  }, [gameState, gameMode]);
+  }, [gameState, gameMode, gameCards.length, setGameCards, setCardsReady, setCardStartTime]);
 
-  // 當卡片索引改變時，記錄新卡片的開始時間
+  // 當卡片索引改變時，重新計時
   useEffect(() => {
     if (gameState === 'playing' && cardsReady && !answered) {
+      cardStartTimeRef.current = Date.now();
       setCardStartTime(Date.now());
     }
-  }, [currentCardIndex, gameState, cardsReady, answered]);
+  }, [currentCardIndex, gameState, cardsReady, answered, setCardStartTime]);
 
-  // 獲取當前遊戲卡片列表
-  const filteredCards = gameCardsRef.current;
+  // ========== 自動保存遊戲進度 ==========
+  useEffect(() => {
+    saveProgress();
+  }, [
+    gameState,
+    currentCardIndex,
+    score,
+    correctCount,
+    selectedAnswer,
+    answered,
+    playerName,
+    gameMode,
+    cardsReady,
+    saveProgress,
+  ]);
 
-  const startGame = () => {
-    // 重置所有遊戲狀態
-    setScore(0);
-    setCorrectCount(0);
-    setCurrentCardIndex(0);
-    setAnswered(false);
-    setSelectedAnswer(null);
-    setCardStartTime(null);
-    setGameStartTime(Date.now()); // 記錄遊戲開始時間
-    // 清空 Ref，讓 useEffect 重新生成遊戲卡片
-    gameCardsRef.current = [];
-    setGameState('playing');
+  // ========== 遊戲事件處理 ==========
+
+  const handleStartGame = () => {
+    startGame();
   };
 
-  const handleAnswer = (index: number) => {
+  const handleAnswer = (selectedIndex: number) => {
     if (answered) return;
 
-    setSelectedAnswer(index);
+    const currentCard = gameCards[currentCardIndex];
+    const isCorrect = selectedIndex === currentCard.answer;
+
+    setSelectedAnswer(selectedIndex);
     setAnswered(true);
 
-    // 計算答題時間（秒）
-    const timeElapsed = cardStartTime ? (Date.now() - cardStartTime) / 1000 : 0;
+    // 計算答題時間並加分
+    const timeElapsed = cardStartTimeRef.current
+      ? (Date.now() - cardStartTimeRef.current) / 1000
+      : 0;
 
-    // 只有答對才計分，分數根據時間決定
-    if (index === filteredCards[currentCardIndex].answer) {
+    if (isCorrect) {
       const points = calculateScore(timeElapsed);
-      setScore((prev) => prev + points);
-      setCorrectCount((prev) => prev + 1);
+      addScore(points);
+      incrementCorrectCount();
     }
   };
 
-  const nextCard = () => {
-    if (currentCardIndex < filteredCards.length - 1) {
-      setCurrentCardIndex((prev) => prev + 1);
+  const handleNextCard = () => {
+    if (currentCardIndex < gameCards.length - 1) {
+      setCurrentCardIndex(currentCardIndex + 1);
       setAnswered(false);
       setSelectedAnswer(null);
     } else {
-      endGame();
+      handleEndGame();
     }
   };
 
-  const endGame = () => {
-    // 📤 保存遊戲記錄到 Supabase
-    const quizTimeInSeconds = gameStartTime ? Math.round((Date.now() - gameStartTime) / 1000) : 0;
-    const accuracy =
-      filteredCards.length > 0 ? Math.round((correctCount / filteredCards.length) * 100) : 0;
+  const handleEndGame = () => {
+    // 保存遊戲記錄到本地
+    const quizTimeInSeconds = calculateGameTime(gameStartTimeRef.current);
+    const accuracy = calculateAccuracy(correctCount, gameCards.length);
 
-    saveGameRecord({
-      player_name: playerName,
-      score: score,
-      quiz_time: quizTimeInSeconds,
-      game_mode: gameMode,
-      correct_count: correctCount,
-      total_questions: filteredCards.length,
-      accuracy: accuracy,
-    }).then((success) => {
-      if (success) {
-        console.log('✅ 遊戲記錄已上傳到 Supabase');
-      } else {
-        console.log('⚠️ 遊戲記錄上傳失敗，已保存到本地');
-      }
-    });
+    const result = {
+      playerName,
+      score,
+      quizTime: quizTimeInSeconds,
+      gameMode,
+      correctCount,
+      totalQuestions: gameCards.length,
+      accuracy,
+    };
 
-    setCardsReady(false);
-    setGameState('finished');
+    // 保存遊戲記錄到排行榜
+    saveGameRecord(result);
+
+    // 保存結果狀態到 localStorage，以便刷新後能恢復
+    setGameResult(result);
   };
 
-  const resetGame = () => {
-    gameCardsRef.current = [];
-    setCardsReady(false);
-    setCardStartTime(null);
-    setGameStartTime(null);
-    if (cardTimerRef.current) clearInterval(cardTimerRef.current);
-    setPlayerName('');
-    setGameState('menu');
-    setGameMode('all');
-    setScore(0);
-    setCorrectCount(0);
-    setCurrentCardIndex(0);
-    setSelectedAnswer(null);
-    setAnswered(false);
+  const handleResetGame = () => {
+    resetGame();
   };
 
-  const t = translations;
+  // ========== 渲染邏輯 ==========
 
-  // Menu State
+  // 菜單畫面
   if (gameState === 'menu') {
     return (
       <Background>
@@ -196,29 +187,29 @@ export default function App() {
           translations={t}
           onPlayerNameChange={setPlayerName}
           onGameModeChange={setGameMode}
-          onStartGame={startGame}
+          onStartGame={handleStartGame}
         />
         <Footer />
       </Background>
     );
   }
 
-  // Game State
-  if (gameState === 'playing' && filteredCards.length > 0 && cardsReady) {
-    const currentCard = filteredCards[currentCardIndex];
+  // 遊戲畫面
+  if (gameState === 'playing' && gameCards.length > 0 && cardsReady) {
+    const currentCard = gameCards[currentCardIndex];
 
     return (
       <Background>
         <GameScreen
           currentCard={currentCard}
           currentCardIndex={currentCardIndex}
-          totalCards={filteredCards.length}
+          totalCards={gameCards.length}
           score={score}
           answered={answered}
           selectedAnswer={selectedAnswer}
           translations={t}
           onAnswer={handleAnswer}
-          onNextCard={nextCard}
+          onNextCard={handleNextCard}
           onBack={() => setGameState('menu')}
         />
         <Footer />
@@ -226,20 +217,19 @@ export default function App() {
     );
   }
 
-  // Finished State
+  // 結束畫面
   if (gameState === 'finished') {
-    const accuracy =
-      filteredCards.length > 0 ? Math.round((correctCount / filteredCards.length) * 100) : 0;
+    const accuracy = calculateAccuracy(correctCount, gameCards.length);
 
     return (
       <Background>
         <FinishedScreen
           score={score}
-          filteredCardsLength={filteredCards.length}
+          totalCards={gameCards.length}
           accuracy={accuracy}
           playerName={playerName}
           translations={t}
-          onBackToMenu={resetGame}
+          onBackToMenu={handleResetGame}
         />
         <Footer />
       </Background>
