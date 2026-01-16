@@ -118,6 +118,12 @@ export interface GameProgressState {
   gameCards: any[]; // 當前遊戲的卡片陣列
   gameStartTime: number | null;
   cardStartTime: number | null;
+  cardTimes?: number[]; // 每個題目花費的時間（秒）
+  wrongAnswers?: Array<{
+    card: any;
+    selectedIndex: number;
+    timeElapsed: number;
+  }>;
 }
 
 const GAME_PROGRESS_KEY = 'bible_quiz_progress';
@@ -170,6 +176,12 @@ export interface GameResultState {
   correctCount: number;
   totalQuestions: number;
   accuracy: number;
+  cardTimes?: number[]; // 每個題目花費的時間（秒）
+  wrongAnswers?: Array<{
+    card: any;
+    selectedIndex: number;
+    timeElapsed: number;
+  }>;
 }
 
 const GAME_RESULT_KEY = 'bible_quiz_result';

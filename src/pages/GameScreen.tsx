@@ -6,6 +6,7 @@
  * - 實現答題交互（選擇答案、禁用已回答卡片）
  * - 顯示進度條和計分
  * - 展示答案結果（正確/錯誤提示）
+ * - 顯示遊戲進行時間和每個題目花費的時間
  *
  * 顯示邏輯：
  * - 答題前：選項背景淺灰，可點擊
@@ -13,6 +14,7 @@
  * - 選項禁用，顯示下一題按鈕
  */
 
+import { useEffect, useState } from 'react';
 import { GlassCard } from '../components/GlassCard';
 import { BibleCard } from '../database';
 import { FaSyncAlt } from 'react-icons/fa';
@@ -28,6 +30,8 @@ interface GameScreenProps {
   onAnswer: (index: number) => void;
   onNextCard: () => void;
   onBack: () => void;
+  gameStartTime?: number | null;
+  cardStartTime?: number | null;
 }
 
 export const GameScreen = ({
@@ -41,12 +45,46 @@ export const GameScreen = ({
   onAnswer,
   onNextCard,
   onBack,
+  gameStartTime,
+  cardStartTime,
 }: GameScreenProps) => {
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [currentCardTime, setCurrentCardTime] = useState(0);
+
+  // 即時更新遊戲進行時間
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (gameStartTime) {
+        const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+        setElapsedTime(elapsed);
+      }
+      if (cardStartTime && !answered) {
+        const cardElapsed = Math.floor((Date.now() - cardStartTime) / 1000);
+        setCurrentCardTime(cardElapsed);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [gameStartTime, cardStartTime, answered]);
+
+  // 當答題後更新卡片時間（保持最後的時間）
+  useEffect(() => {
+    if (answered && cardStartTime) {
+      const cardElapsed = Math.floor((Date.now() - cardStartTime) / 1000);
+      setCurrentCardTime(cardElapsed);
+    }
+  }, [answered, cardStartTime]);
   const cardContent = currentCard.content;
   const progressPercent = ((currentCardIndex + 1) / totalCards) * 100;
 
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
-    <div className="mx-auto flex max-w-xl min-w-sm flex-1 flex-col space-y-5 p-6 sm:space-y-8 lg:p-8">
+    <div className="mx-auto flex max-w-xl min-w-sm flex-1 flex-col space-y-4 p-6 sm:space-y-8 lg:p-8">
       {/* Header */}
       <div className="w-full max-w-full px-2 sm:max-w-2xl">
         <div className="flex items-center justify-between gap-4 pb-2 sm:flex-row sm:gap-8">
@@ -89,7 +127,7 @@ export const GameScreen = ({
       </div>
 
       {/* Card */}
-      <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 overflow-hidden px-6 py-8 sm:space-y-7 md:px-8 md:py-10 lg:max-w-lg">
+      <GlassCard className="psm:max-w-xl mx-auto flex w-full flex-col gap-6 overflow-hidden px-6 py-8 md:px-8 md:py-10 lg:max-w-lg">
         {/* Verse */}
         <p className="text-accent border-accent border-l-4 pl-3 leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg">
           {cardContent.verse}
@@ -136,6 +174,24 @@ export const GameScreen = ({
           })}
         </div>
       </GlassCard>
+
+      {/* Time Display */}
+      <div className="rounded-lg bg-neutral-800/50 p-3 text-center">
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-xs font-bold tracking-widest text-neutral-400 uppercase">
+              {t.game.time || '遊戲時間'}
+            </p>
+            <p className="text-base font-bold text-orange-500">{formatTime(elapsedTime)}</p>
+          </div>
+          <div>
+            <p className="text-xs font-bold tracking-widest text-neutral-400 uppercase">
+              {t.game.cardTime || '此題耗時'}
+            </p>
+            <p className="text-base font-bold text-cyan-400">{formatTime(currentCardTime)}</p>
+          </div>
+        </div>
+      </div>
 
       {/* Action Button */}
       {answered ? (

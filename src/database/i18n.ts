@@ -38,6 +38,8 @@ export const translations = {
     finishBtn: '完成',
     pleaseAnswer: '請選擇答案',
     backBtn: '離開',
+    time: '遊戲時間',
+    cardTime: '此題耗時',
     testaments: {
       old: '舊約',
       new: '新約',
@@ -52,6 +54,11 @@ export const translations = {
     accuracy: '正確率',
     questions: '題數',
     backBtn: '返回首頁',
+    wrongAnswers: '答錯的題目',
+    question: '問題',
+    yourAnswer: '你的答案',
+    correctAnswer: '正確答案',
+    timeSpent: '耗時',
   },
   leaderboard: {
     title: '🏆 排行榜 TOP 5',

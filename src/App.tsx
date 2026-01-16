@@ -43,6 +43,8 @@ export default function App() {
     cardsReady,
     gameStartTime,
     cardStartTime,
+    cardTimes,
+    wrongAnswers,
     setGameState,
     setPlayerName,
     setGameMode,
@@ -54,6 +56,8 @@ export default function App() {
     setGameCards,
     setCardsReady,
     setCardStartTime,
+    addCardTime,
+    addWrongAnswer,
     startGame,
     endGame,
     resetGame,
@@ -132,7 +136,13 @@ export default function App() {
       ? (Date.now() - cardStartTimeRef.current) / 1000
       : 0;
 
-    if (isCorrect) {
+    // 記錄此題目的耗時
+    addCardTime(timeElapsed);
+
+    // 如果答錯，記錄錯誤答案
+    if (!isCorrect) {
+      addWrongAnswer(currentCard, selectedIndex, timeElapsed);
+    } else {
       const points = calculateScore(timeElapsed);
       addScore(points);
       incrementCorrectCount();
@@ -162,6 +172,8 @@ export default function App() {
       correctCount,
       totalQuestions: gameCards.length,
       accuracy,
+      cardTimes,
+      wrongAnswers,
     };
 
     // 保存遊戲記錄到排行榜
@@ -211,6 +223,8 @@ export default function App() {
           onAnswer={handleAnswer}
           onNextCard={handleNextCard}
           onBack={() => setGameState('menu')}
+          gameStartTime={gameStartTime}
+          cardStartTime={cardStartTime}
         />
         <Footer />
       </Background>
@@ -230,6 +244,7 @@ export default function App() {
           playerName={playerName}
           translations={t}
           onBackToMenu={handleResetGame}
+          wrongAnswers={wrongAnswers}
         />
         <Footer />
       </Background>

@@ -46,6 +46,16 @@ export interface GameStoreState {
   gameStartTime: number | null;
   cardStartTime: number | null;
 
+  // ========== 時間追蹤 ==========
+  cardTimes: number[]; // 每個題目花費的時間（秒）
+
+  // ========== 錯誤追蹤 ==========
+  wrongAnswers: Array<{
+    card: BibleCard;
+    selectedIndex: number;
+    timeElapsed: number;
+  }>;
+
   // ========== 狀態更新方法 ==========
   setGameState: (state: GameState) => void;
   setPlayerName: (name: string) => void;
@@ -61,6 +71,10 @@ export interface GameStoreState {
   setCardsReady: (ready: boolean) => void;
   setGameStartTime: (time: number | null) => void;
   setCardStartTime: (time: number | null) => void;
+  addCardTime: (time: number) => void;
+  addWrongAnswer: (card: BibleCard, selectedIndex: number, timeElapsed: number) => void;
+  clearCardTimes: () => void;
+  clearWrongAnswers: () => void;
 
   // ========== 複合操作 ==========
   startGame: () => void;
@@ -94,6 +108,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   cardsReady: false,
   gameStartTime: null,
   cardStartTime: null,
+  cardTimes: [],
+  wrongAnswers: [],
 
   // ========== 單個狀態更新 ==========
   setGameState: (state) => set({ gameState: state }),
@@ -110,6 +126,16 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   setCardsReady: (ready) => set({ cardsReady: ready }),
   setGameStartTime: (time) => set({ gameStartTime: time }),
   setCardStartTime: (time) => set({ cardStartTime: time }),
+  addCardTime: (time) =>
+    set((state) => ({
+      cardTimes: [...state.cardTimes, time],
+    })),
+  addWrongAnswer: (card, selectedIndex, timeElapsed) =>
+    set((state) => ({
+      wrongAnswers: [...state.wrongAnswers, { card, selectedIndex, timeElapsed }],
+    })),
+  clearCardTimes: () => set({ cardTimes: [] }),
+  clearWrongAnswers: () => set({ wrongAnswers: [] }),
 
   // ========== 複合操作 ==========
   startGame: () => {
@@ -125,6 +151,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       cardsReady: false,
       gameStartTime: Date.now(),
       cardStartTime: null,
+      cardTimes: [],
+      wrongAnswers: [],
     });
   },
 
@@ -149,6 +177,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       cardsReady: false,
       gameStartTime: null,
       cardStartTime: null,
+      cardTimes: [],
+      wrongAnswers: [],
     });
   },
 
@@ -166,6 +196,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         gameCards: savedProgress.gameCards,
         gameStartTime: savedProgress.gameStartTime,
         cardStartTime: savedProgress.cardStartTime,
+        cardTimes: savedProgress.cardTimes || [],
+        wrongAnswers: savedProgress.wrongAnswers || [],
         cardsReady: true,
         gameState: 'playing',
       });
@@ -206,6 +238,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         gameCards: state.gameCards,
         gameStartTime: state.gameStartTime,
         cardStartTime: state.cardStartTime,
+        cardTimes: state.cardTimes,
+        wrongAnswers: state.wrongAnswers,
       });
     }
   },
@@ -218,6 +252,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       score: result.score,
       correctCount: result.correctCount,
       gameState: 'finished',
+      cardTimes: result.cardTimes || [],
+      wrongAnswers: result.wrongAnswers || [],
     });
   },
 
