@@ -15,7 +15,7 @@ export const translations = {
   title: {
     main: 'BIBLE WISDOM',
     sub: '聖經內容還記得多少？快來挑戰吧！',
-    resources: 'January 2026',
+    resources: 'Jan 2026 | v1.0.0',
   },
   menu: {
     nameLabel: '挑戰者',
@@ -55,10 +55,14 @@ export const translations = {
     questions: '題數',
     backBtn: '返回首頁',
     wrongAnswers: '答錯的題目',
+    allAnswers: '回答列表',
     question: '問題',
-    yourAnswer: '你的答案',
+
+    answer: '答',
+    yourAnswer: '你選',
     correctAnswer: '正確答案',
     timeSpent: '耗時',
+    avgTime: '平均用時',
   },
   leaderboard: {
     title: '🏆 排行榜 TOP 5',

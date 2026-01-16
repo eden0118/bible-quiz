@@ -32,6 +32,7 @@ interface GameScreenProps {
   onBack: () => void;
   gameStartTime?: number | null;
   cardStartTime?: number | null;
+  accumulatedGameTime?: number;
 }
 
 export const GameScreen = ({
@@ -47,17 +48,17 @@ export const GameScreen = ({
   onBack,
   gameStartTime,
   cardStartTime,
+  accumulatedGameTime = 0,
 }: GameScreenProps) => {
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState(accumulatedGameTime);
   const [currentCardTime, setCurrentCardTime] = useState(0);
 
   // 即時更新遊戲進行時間
   useEffect(() => {
     const interval = setInterval(() => {
-      if (gameStartTime) {
-        const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
-        setElapsedTime(elapsed);
-      }
+      // 顯示累積時間
+      setElapsedTime(accumulatedGameTime);
+
       if (cardStartTime && !answered) {
         const cardElapsed = Math.floor((Date.now() - cardStartTime) / 1000);
         setCurrentCardTime(cardElapsed);
@@ -65,7 +66,7 @@ export const GameScreen = ({
     }, 100);
 
     return () => clearInterval(interval);
-  }, [gameStartTime, cardStartTime, answered]);
+  }, [cardStartTime, answered, accumulatedGameTime]);
 
   // 當答題後更新卡片時間（保持最後的時間）
   useEffect(() => {
@@ -79,12 +80,12 @@ export const GameScreen = ({
 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    const secs = (seconds % 60).toFixed(2);
+    return `${mins}:${secs.padStart(5, '0')}`;
   };
 
   return (
-    <div className="mx-auto flex max-w-xl min-w-sm flex-1 flex-col space-y-4 p-6 sm:space-y-8 lg:p-8">
+    <div className="mx-auto flex max-w-xl min-w-fit flex-1 flex-col space-y-4 p-6 sm:space-y-8 lg:p-8">
       {/* Header */}
       <div className="w-full max-w-full px-2 sm:max-w-2xl">
         <div className="flex items-center justify-between gap-4 pb-2 sm:flex-row sm:gap-8">
@@ -131,10 +132,18 @@ export const GameScreen = ({
         {/* Verse */}
         <p className="text-accent border-accent border-l-4 pl-3 leading-relaxed italic sm:pl-4 lg:pl-6 lg:text-lg">
           {cardContent.verse}
+
+          {cardContent.reference && (
+            <p className="mt-2 text-right text-xs font-medium tracking-wide text-gray-400 opacity-75">
+              {cardContent.reference}
+            </p>
+          )}
         </p>
 
         {/* Question */}
-        <h3 className="text-foreground text-lg font-medium lg:text-xl">{cardContent.question}</h3>
+        <div>
+          <h3 className="text-foreground text-lg font-medium lg:text-xl">{cardContent.question}</h3>
+        </div>
 
         {/* Options */}
         <div className="grid grid-cols-2 gap-2 sm:gap-4">
@@ -175,6 +184,15 @@ export const GameScreen = ({
         </div>
       </GlassCard>
 
+      {/* Action Button */}
+      {answered && (
+        <div className="w-full px-1">
+          <button onClick={onNextCard} className="button secondary-btn">
+            {currentCardIndex < totalCards - 1 ? t.game.nextBtn : t.game.finishBtn}
+          </button>
+        </div>
+      )}
+
       {/* Time Display */}
       <div className="rounded-lg bg-neutral-800/50 p-3 text-center">
         <div className="grid grid-cols-2 gap-4">
@@ -192,19 +210,6 @@ export const GameScreen = ({
           </div>
         </div>
       </div>
-
-      {/* Action Button */}
-      {answered ? (
-        <div className="w-full px-1">
-          <button onClick={onNextCard} className="button secondary-btn">
-            {currentCardIndex < totalCards - 1 ? t.game.nextBtn : t.game.finishBtn}
-          </button>
-        </div>
-      ) : (
-        <span className="w-full text-center text-[10px] font-black tracking-[0.2em] text-neutral-400 uppercase">
-          {t.game.pleaseAnswer}
-        </span>
-      )}
     </div>
   );
 };

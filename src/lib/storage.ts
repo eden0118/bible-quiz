@@ -119,6 +119,7 @@ export interface GameProgressState {
   gameStartTime: number | null;
   cardStartTime: number | null;
   cardTimes?: number[]; // 每個題目花費的時間（秒）
+  accumulatedGameTime?: number; // 累積遊戲時間
   wrongAnswers?: Array<{
     card: any;
     selectedIndex: number;
@@ -176,7 +177,9 @@ export interface GameResultState {
   correctCount: number;
   totalQuestions: number;
   accuracy: number;
+  gameCards?: any[]; // 遊戲的卡片陣列
   cardTimes?: number[]; // 每個題目花費的時間（秒）
+  accumulatedGameTime?: number; // 累積遊戲時間
   wrongAnswers?: Array<{
     card: any;
     selectedIndex: number;

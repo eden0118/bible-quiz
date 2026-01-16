@@ -23,7 +23,7 @@ import { filterCards, calculateScore, calculateGameTime, calculateAccuracy } fro
 import { useGameStore } from './lib/gameStore';
 
 //  開發階段調整點：修改此數值以改變每次遊戲的題數
-const CARDS_PER_GAME = 10;
+const CARDS_PER_GAME = 5;
 
 const t = translations;
 
@@ -44,6 +44,7 @@ export default function App() {
     gameStartTime,
     cardStartTime,
     cardTimes,
+    accumulatedGameTime,
     wrongAnswers,
     setGameState,
     setPlayerName,
@@ -57,6 +58,7 @@ export default function App() {
     setCardsReady,
     setCardStartTime,
     addCardTime,
+    addAccumulatedGameTime,
     addWrongAnswer,
     startGame,
     endGame,
@@ -139,6 +141,9 @@ export default function App() {
     // 記錄此題目的耗時
     addCardTime(timeElapsed);
 
+    // 累積遊戲時間（只計算實際答題時間）
+    addAccumulatedGameTime(timeElapsed);
+
     // 如果答錯，記錄錯誤答案
     if (!isCorrect) {
       addWrongAnswer(currentCard, selectedIndex, timeElapsed);
@@ -160,8 +165,8 @@ export default function App() {
   };
 
   const handleEndGame = () => {
-    // 保存遊戲記錄到本地
-    const quizTimeInSeconds = calculateGameTime(gameStartTimeRef.current);
+    // 使用累積遊戲時間而不是從開始時間計算
+    const quizTimeInSeconds = Math.floor(accumulatedGameTime);
     const accuracy = calculateAccuracy(correctCount, gameCards.length);
 
     const result = {
@@ -172,7 +177,9 @@ export default function App() {
       correctCount,
       totalQuestions: gameCards.length,
       accuracy,
+      gameCards,
       cardTimes,
+      accumulatedGameTime,
       wrongAnswers,
     };
 
@@ -225,6 +232,7 @@ export default function App() {
           onBack={() => setGameState('menu')}
           gameStartTime={gameStartTime}
           cardStartTime={cardStartTime}
+          accumulatedGameTime={accumulatedGameTime}
         />
         <Footer />
       </Background>
@@ -245,6 +253,9 @@ export default function App() {
           translations={t}
           onBackToMenu={handleResetGame}
           wrongAnswers={wrongAnswers}
+          gameCards={gameCards}
+          cardTimes={cardTimes}
+          accumulatedGameTime={accumulatedGameTime}
         />
         <Footer />
       </Background>

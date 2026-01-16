@@ -8,6 +8,9 @@
     "dev": "vite --port 1178",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\" \"*.{json,js,ts}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css}\" \"*.{json,js,ts}\"",
     "lint": "eslint src --ext ts,tsx",
@@ -22,14 +25,20 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.17",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
     "@types/node": "^22.14.0",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/ui": "^4.0.17",
+    "happy-dom": "^20.3.1",
+    "jsdom": "^27.4.0",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.17",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "vitest": "^4.0.17"
   }
 }

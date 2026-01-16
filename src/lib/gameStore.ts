@@ -48,6 +48,7 @@ export interface GameStoreState {
 
   // ========== 時間追蹤 ==========
   cardTimes: number[]; // 每個題目花費的時間（秒）
+  accumulatedGameTime: number; // 累積遊戲時間（秒，不包括結果展示時間）
 
   // ========== 錯誤追蹤 ==========
   wrongAnswers: Array<{
@@ -72,6 +73,7 @@ export interface GameStoreState {
   setGameStartTime: (time: number | null) => void;
   setCardStartTime: (time: number | null) => void;
   addCardTime: (time: number) => void;
+  addAccumulatedGameTime: (time: number) => void;
   addWrongAnswer: (card: BibleCard, selectedIndex: number, timeElapsed: number) => void;
   clearCardTimes: () => void;
   clearWrongAnswers: () => void;
@@ -109,6 +111,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   gameStartTime: null,
   cardStartTime: null,
   cardTimes: [],
+  accumulatedGameTime: 0,
   wrongAnswers: [],
 
   // ========== 單個狀態更新 ==========
@@ -129,6 +132,10 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   addCardTime: (time) =>
     set((state) => ({
       cardTimes: [...state.cardTimes, time],
+    })),
+  addAccumulatedGameTime: (time) =>
+    set((state) => ({
+      accumulatedGameTime: state.accumulatedGameTime + time,
     })),
   addWrongAnswer: (card, selectedIndex, timeElapsed) =>
     set((state) => ({
@@ -152,6 +159,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       gameStartTime: Date.now(),
       cardStartTime: null,
       cardTimes: [],
+      accumulatedGameTime: 0,
       wrongAnswers: [],
     });
   },
@@ -178,6 +186,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       gameStartTime: null,
       cardStartTime: null,
       cardTimes: [],
+      accumulatedGameTime: 0,
       wrongAnswers: [],
     });
   },
@@ -197,6 +206,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         gameStartTime: savedProgress.gameStartTime,
         cardStartTime: savedProgress.cardStartTime,
         cardTimes: savedProgress.cardTimes || [],
+        accumulatedGameTime: savedProgress.accumulatedGameTime || 0,
         wrongAnswers: savedProgress.wrongAnswers || [],
         cardsReady: true,
         gameState: 'playing',
@@ -215,7 +225,10 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         gameMode: savedResult.gameMode,
         score: savedResult.score,
         correctCount: savedResult.correctCount,
-        gameCards: [],
+        gameCards: savedResult.gameCards || [],
+        cardTimes: savedResult.cardTimes || [],
+        accumulatedGameTime: savedResult.accumulatedGameTime || 0,
+        wrongAnswers: savedResult.wrongAnswers || [],
         gameState: 'finished',
       });
       console.log('✅ 已恢復遊戲結果');
@@ -239,6 +252,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         gameStartTime: state.gameStartTime,
         cardStartTime: state.cardStartTime,
         cardTimes: state.cardTimes,
+        accumulatedGameTime: state.accumulatedGameTime,
         wrongAnswers: state.wrongAnswers,
       });
     }

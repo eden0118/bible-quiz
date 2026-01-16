@@ -97,6 +97,28 @@ const CARDS_PER_GAME = 5; // 修改此數值
 - **響應式設計**: 行動優先的 Tailwind CSS v4 實現
 - **類型安全**: 全程 TypeScript 支援
 
+## ✨ 最新功能 (v1.1.0)
+
+### 時間追蹤系統
+
+- ⏱️ **遊戲時間統計**: 累積實際答題時間（不包括看結果和點下一題的停留時間）
+- ⏱️ **單題耗時**: 實時顯示每個題目的答題時間
+- ⏱️ **平均用時**: 計算每題平均耗時
+- ⏱️ **時間精度**: 精確至小數點後兩位
+
+### 答題詳細記錄
+
+- 📋 **回答列表**: 顯示所有回答的題目及時間
+- ✅ **正確題目**: 只顯示答案（綠色標記）
+- ❌ **錯誤題目**: 並排顯示選擇的答案和正確答案（紅色標記）
+- 📍 **經文出處**: 每題顯示經文來源和參考位置
+
+### 數據持久化
+
+- 💾 **進度恢復**: 刷新頁面後可繼續進行中的遊戲
+- 💾 **結果保留**: 刷新頁面後仍能查看完整的遊戲結果及所有詳細記錄
+- 💾 **Zustand 狀態**: 中央化狀態管理確保數據一致性
+
 ## 🛠️ 技術棧
 
 | 工具             | 版本    | 用途                |
@@ -106,6 +128,7 @@ const CARDS_PER_GAME = 5; // 修改此數值
 | **Tailwind CSS** | ^4.1.17 | 樣式框架 (CSS 優先) |
 | **Zustand**      | ^5.0.10 | 狀態管理            |
 | **Vite**         | ^6.2.0  | 建置工具            |
+| **Vitest**       | ^4.0.17 | 單元測試框架        |
 | **Prettier**     | ^3.7.4  | 代碼格式化          |
 
 ## 📦 安裝與開發
@@ -142,6 +165,50 @@ npm run preview             # 預覽生產構建
 ```bash
 npm run type-check          # 檢查 TypeScript 錯誤
 ```
+
+### 測試
+
+```bash
+npm run test                # 監視模式運行測試
+npm run test:ui             # 在 UI 儀表板中運行測試
+npm run test:coverage       # 生成代碼覆蓋率報告
+```
+
+#### 測試框架與工具
+
+- **Vitest**: 現代化的 JavaScript 測試框架
+- **@testing-library/react**: React 元件測試工具
+- **happy-dom**: 輕量級 DOM 實現，用於測試環境
+
+#### 測試覆蓋
+
+當前測試覆蓋 **36 個用例**：
+
+| 模組             | 測試數 | 涵蓋範圍                         |
+| ---------------- | ------ | -------------------------------- |
+| **gameLogic.ts** | 17     | 卡片篩選、計分、準確率、隨機排序 |
+| **storage.ts**   | 8      | localStorage 操作、數據持久化    |
+| **data.ts**      | 11     | 卡片數據結構、翻譯字段驗證       |
+
+##### gameLogic 測試
+
+- `filterCards()`: 卡片篩選、模式切換、數量限制
+- `calculateScore()`: 時間轉分數的映射算法
+- `calculateAccuracy()`: 準確率百分比計算
+- `shuffleCards()`: Fisher-Yates 隨機算法
+
+##### storage 測試
+
+- `GameRecord`: 遊戲記錄的儲存、查詢、排序
+- `GameProgress`: 進行中遊戲的進度保存和恢復
+- `GameResult`: 遊戲結果的完整保存和清除
+- `localStorage 模擬\*\*: 測試環境中的本地存儲功能
+
+##### data 測試
+
+- 卡片數據有效性驗證（ID、選項、答案索引）
+- 翻譯文本的完整性檢查
+- 數據結構一致性驗證
 
 ## 🎨 設計系統
 
@@ -180,13 +247,19 @@ Button 和 GlassCard 元件使用 **class-variance-authority** 提供類型安�
 
 ### 簡潔的狀態管理
 
-App 元件集中管理遊戲狀態，使用 React Hooks：
+使用 **Zustand** 進行中央化狀態管理，所有遊戲狀態存儲在 `useGameStore`：
 
-```tsx
-const [gameState, setGameState] = useState<GameState>('menu');
-const [score, setScore] = useState(0);
-const [leaderboard, setLeaderboard] = useState([]);
-```
+````tsx
+const {
+  gameState,        // 遊戲狀態: menu | playing | finished
+  score,            // 當前分數
+  cardTimes,        // 每題耗時陣列
+  accumulatedGameTime, // 累積遊戲時間
+  wrongAnswers,     // 答錯的題目清單
+  startGame,        // 開始遊戲
+  addCardTime,      // 記錄單題耗時
+  addAccumulatedGameTime, // 累積遊戲時間
+} = useGameStore();
 
 ### 條件式螢幕渲染
 
@@ -194,9 +267,22 @@ const [leaderboard, setLeaderboard] = useState([]);
 
 ### localStorage 狀態持久化
 
-- **遊戲進度**: 自動儲存當前遊戲進度，刷新後可恢復遊戲
-- **遊戲結果**: 儲存最後一次遊戲的結果，點擊返回後清除
-- **排行榜**: 自動儲存玩家成績，支援前 10 筆紀錄查詢
+採用分層持久化設計：
+
+- **遊戲進度** (`bible_quiz_progress`):
+  - 自動儲存當前遊戲進度、答題記錄、時間數據
+  - 刷新後可恢復到中斷前的狀態
+  - 開始新遊戲時清除
+
+- **遊戲結果** (`bible_quiz_result`):
+  - 遊戲結束後自動儲存完整結果
+  - 包含所有回答、時間、錯誤題目等詳細信息
+  - 返回菜單時清除
+
+- **排行榜** (`bible_quiz_records`):
+  - 自動儲存玩家成績
+  - 支援前 10 筆紀錄查詢
+  - 持續累積，可用於長期進度追蹤
 
 ## 🚀 部署
 
@@ -205,7 +291,7 @@ const [leaderboard, setLeaderboard] = useState([]);
 ```bash
 npm run build   # 生成 dist/ 資料夾
 # 將 dist/ 部署至託管平台
-```
+````
 
 ## 📄 授權
 
